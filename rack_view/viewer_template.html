@@ -1,0 +1,174 @@
+<meta charset="utf-8">
+<title>RackMate T2 Build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: full-height workbench. 3D stage on the left, a narrow parts rail on the right; stacks on phones. */
+:root {
+  --bg: #eef0f2;
+  --panel: #f8f9fa;
+  --fg: #1d2329;
+  --muted: #5d6973;
+  --line: #d3d8dd;
+  --accent: #d9761e;
+  --stage: #e3e7eb;
+  --font-ui: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15191d; --panel: #1c2126; --fg: #e4e8ec; --muted: #94a0aa; --line: #2e353c; --accent: #f28c28; --stage: #101418; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #15191d; --panel: #1c2126; --fg: #e4e8ec; --muted: #94a0aa; --line: #2e353c; --accent: #f28c28; --stage: #101418; color-scheme: dark }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-ui); font-size: 14px; }
+.app { display: grid; grid-template-columns: minmax(0, 1fr) 300px; height: 100%; }
+.stage { position: relative; background: var(--stage); min-height: 320px; overflow: hidden; }
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.hint { position: absolute; left: 16px; bottom: 12px; font-size: 12px; color: var(--muted); pointer-events: none; }
+.views { position: absolute; top: 12px; left: 16px; display: flex; gap: 6px; flex-wrap: wrap; }
+.rail { background: var(--panel); border-left: 1px solid var(--line); padding: 20px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+h1 { font-size: 18px; font-weight: 600; margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); margin: 4px 0 0; line-height: 1.45; }
+.label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; font-weight: 500; }
+button { font: 500 12px var(--font-ui); color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.toggles { display: flex; flex-direction: column; gap: 8px; }
+.toggles label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.u { margin-left: auto; font-family: var(--font-data); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--line); flex: none; }
+.note { font-size: 12px; color: var(--muted); line-height: 1.5; margin: 0; }
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: 70vh auto; height: auto; }
+  .rail { border-left: 0; border-top: 1px solid var(--line); }
+}
+</style>
+
+<div class="app">
+  <div class="stage" id="stage">
+    <div class="views" role="group" aria-label="Camera">
+      <button id="v-iso" type="button">3/4 view</button>
+      <button id="v-front" type="button">Front</button>
+      <button id="v-side" type="button">Side</button>
+      <button id="v-rear" type="button">Rear</button>
+      <button id="v-top" type="button">Top close-up</button>
+    </div>
+    <div class="hint">Drag to rotate · scroll or pinch to zoom · right-drag to pan</div>
+  </div>
+  <aside class="rail">
+    <div>
+      <h1>RackMate T2 build</h1>
+      <p class="sub">Everything printed so far, in the 12U rack: the Mac shelf, the Flex Mini mount and the U6 Pro pedestal on top.</p>
+    </div>
+    <div>
+      <p class="label">Show</p>
+      <div class="toggles">
+        <label><input id="g-ped" type="checkbox" checked><span class="swatch" style="background:#5f7a94"></span>U6 Pro pedestal<span class="u">top</span></label>
+        <label><input id="g-flex" type="checkbox" checked><span class="swatch" style="background:#33475e"></span>Flex Mini + injector mount<span class="u">U12</span></label>
+        <label><input id="g-mac" type="checkbox" checked><span class="swatch" style="background:#2f3337"></span>Mac Studio + minis shelf<span class="u">U2–U6</span></label>
+        <label><input id="g-dev" type="checkbox" checked><span class="swatch" style="background:#c9ccd1"></span>Devices</label>
+        <label><input id="g-rack" type="checkbox" checked><span class="swatch" style="background:#1b1e21"></span>Rack frame</label>
+        <label><input id="g-sides" type="checkbox" checked><span class="swatch" style="background:#9aa3ad"></span>Acrylic side panels</label>
+      </div>
+    </div>
+    <p class="note">The printed parts come from their real STLs. The rack, the devices, and the fan in the shelf are rough stand-ins. Positions in the rack are examples. The shelf sits one U up so its bottom fan has room to breathe.</p>
+  </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+__DATA__
+<script>
+(function () {
+  const U = 44.45, TOP_Z = 566.4, DEPTH = 255;
+  const MAC = [0, 0, 1 * U], FLEX = [0, 0, 11 * U], PED = [0, DEPTH / 2 - 19.85, TOP_Z];
+  const parts = [
+    ['rack_rack', 0x1b1e21, 'g-rack', [0, 0, 0]],
+    ['rack_cover', 0x30353a, 'g-rack', [0, 0, 0], 0.85],
+    ['rack_sides', 0x9aa3ad, 'g-sides', [0, 0, 0], 0.16],
+    ['mac_frame', 0x2f3337, 'g-mac', MAC],
+    ['mac_seps', 0xf28c28, 'g-mac', MAC],
+    ['mac_fan', 0x3a3f45, 'g-mac', MAC],
+    ['mac_studio', 0xc9ccd1, 'g-dev', MAC],
+    ['mac_minis', 0xb8bcc2, 'g-dev', MAC],
+    ['flex_base', 0x33475e, 'g-flex', FLEX],
+    ['flex_frame', 0xf28c28, 'g-flex', FLEX],
+    ['flex_switch', 0xe8eaec, 'g-dev', FLEX],
+    ['flex_inj', 0xd0d4d8, 'g-dev', FLEX],
+    ['ped_base', 0x5f7a94, 'g-ped', PED],
+    ['ped_deck', 0x5f7a94, 'g-ped', PED],
+    ['ped_fan', 0x3a3f45, 'g-ped', PED],
+    ['ped_ap', 0xf2f3f4, 'g-dev', PED],
+    ['ped_inj', 0xd0d4d8, 'g-dev', PED]
+  ];
+
+  const stage = document.getElementById('stage');
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  stage.prepend(renderer.domElement);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(32, 1, 1, 10000);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8890a0, 0.75));
+  const key = new THREE.DirectionalLight(0xffffff, 0.7); key.position.set(600, 900, -700); scene.add(key);
+  const fill = new THREE.DirectionalLight(0xffffff, 0.35); fill.position.set(-600, 300, 600); scene.add(fill);
+
+  // model is Z-up with +Y towards the rear; turn it so the rack front faces the camera
+  const world = new THREE.Group(); world.rotation.x = -Math.PI / 2; scene.add(world);
+  const loader = new THREE.STLLoader();
+  const groups = {};
+  parts.forEach(function (p) {
+    const el = document.getElementById('stl-' + p[0]);
+    const s = atob(el.textContent.trim()), u = new Uint8Array(s.length);
+    for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i);
+    const g = loader.parse(u.buffer); g.computeVertexNormals();
+    const opacity = p[4] || 1;
+    const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({
+      color: p[1], roughness: 0.6, metalness: 0.05, side: THREE.DoubleSide,
+      transparent: opacity < 1, opacity: opacity, depthWrite: opacity >= 0.5 }));
+    m.position.set(p[3][0], p[3][1], p[3][2]);
+    world.add(m);
+    (groups[p[2]] = groups[p[2]] || []).push(m);
+  });
+  Object.keys(groups).forEach(function (id) {
+    const el = document.getElementById(id);
+    el.addEventListener('change', function () { groups[id].forEach(function (m) { m.visible = el.checked; }); });
+  });
+
+  // three coords: x = across, y = up, z = towards the front (world -Y)
+  const mid = new THREE.Vector3(0, 290, -DEPTH / 2);
+  const views = {
+    'v-iso':   [[-900, 900, 1300], mid],
+    'v-front': [[0, 300, 1750], mid],
+    'v-side':  [[1750, 300, -DEPTH / 2], mid],
+    'v-rear':  [[700, 800, -1700], mid],
+    'v-top':   [[-380, 900, 420], new THREE.Vector3(0, 600, -DEPTH / 2)]
+  };
+  let tween = null;
+  function go(id, instant) {
+    const v = views[id];
+    tween = { fp: camera.position.clone(), tp: new THREE.Vector3().fromArray(v[0]), ft: controls.target.clone(), tt: v[1].clone(), t: instant ? 1 : 0 };
+  }
+  Object.keys(views).forEach(function (id) { document.getElementById(id).addEventListener('click', function () { go(id); }); });
+  camera.position.fromArray(views['v-iso'][0]); controls.target.copy(mid);
+
+  function resize() {
+    const w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage); resize();
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  (function loop() {
+    if (tween) {
+      tween.t = reduce ? 1 : Math.min(1, tween.t + 0.05);
+      const k = 1 - Math.pow(1 - tween.t, 3);
+      camera.position.lerpVectors(tween.fp, tween.tp, k);
+      controls.target.lerpVectors(tween.ft, tween.tt, k);
+      if (tween.t >= 1) tween = null;
+    }
+    controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop);
+  })();
+})();
+</script>
