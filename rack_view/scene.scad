@@ -24,7 +24,7 @@ at(U) {
     part(str("mac_minis_", config), "#b8bcc2");
 }
 if (focus == "all") {
-    at(9.5 * U) { part("brush_panel", "#15171a"); part("brush_brush", "#4a5058"); part("brush_cables", "#25292e"); }
+    at(9.5 * U) { part("brush_panel", "#15171a"); part("brush_brush", "#4a5058"); }
     at(10 * U) { part("flex_base", "#2f3337"); part("flex_frame", "#5a616b");
                  part("flex_switch", "#e8eaec"); part("flex_inj", "#d0d4d8");
                  part("flex_ports", "#1d2024"); part("flex_leds", "#7cd38b"); }

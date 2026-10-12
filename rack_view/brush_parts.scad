@@ -1,7 +1,7 @@
 // Visual stand-in for a Tecmojo 0.5U cable-management brush panel (bought).
 // A black half-height plate with rack ears and a long slot filled with
 // two rows of bristles that meet in the middle, so cables can be pushed
-// through anywhere along it. A couple of cables are drawn going through.
+// through anywhere along it.
 // Rack coordinates: X across (0 = centre), Y rearward from the back face
 // of the rack ears, Z up from the bottom of the half-U.
 which = "panel";   // [panel, brush, cables]
@@ -12,7 +12,7 @@ t = 2;
 slot = [204, 12];          // the brush opening
 strand = [0.7, 6, 0.7];    // bristle tuft: width, depth (front to back), thickness
 pitch = 1.5;               // tuft spacing along the slot
-cable_x = [-55, -40, 62];  // where the drawn cables pass through
+cable_x = [];              // gaps in the bristles for cables (none drawn)
 
 module panel() {
     difference() {
@@ -35,7 +35,7 @@ module panel() {
 module brush() {
     half = slot[1] / 2;
     for (x = [-(slot[0] / 2 - half) : pitch : slot[0] / 2 - half])
-        if (min([for (c = cable_x) abs(x - c)]) > 4)
+        if (len(cable_x) == 0 || min([for (c = cable_x) abs(x - c)]) > 4)
             for (s = [-1, 1]) {
                 // top row hangs down, bottom row stands up, staggered by half a pitch
                 xx = x + (s > 0 ? 0 : pitch / 2);
