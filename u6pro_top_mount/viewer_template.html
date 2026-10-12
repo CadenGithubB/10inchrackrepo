@@ -63,7 +63,7 @@ dd { margin: 0; font-family: var(--font-data); font-size: 12px; text-align: righ
   <aside class="rail">
     <div>
       <h1>U6 Pro rack pedestal</h1>
-      <p class="sub">Sits on the RackMate T2's top cover. A 120 mm fan inside pulls air up out of the rack and across the back of the AP.</p>
+      <p class="sub">Sits on the RackMate T2's top cover. A 120 mm fan inside pulls air up out of the rack and across the back of the AP. The PoE injector stands in a pod on the back.</p>
     </div>
 
     <div>
@@ -80,6 +80,7 @@ dd { margin: 0; font-family: var(--font-data); font-size: 12px; text-align: righ
         <label><input id="t-ap" type="checkbox" checked><span class="swatch" style="background:#f2f3f4"></span>U6 Pro</label>
         <label><input id="t-deck" type="checkbox" checked><span class="swatch" style="background:#5f7a94"></span>Deck</label>
         <label><input id="t-inj" type="checkbox" checked><span class="swatch" style="background:#3a3f45"></span>120 mm fan</label>
+        <label><input id="t-pod" type="checkbox" checked><span class="swatch" style="background:#c9ced3"></span>U-PoE-AT injector</label>
         <label><input id="t-base" type="checkbox" checked><span class="swatch" style="background:#3c4249"></span>Base</label>
         <label><input id="t-rack" type="checkbox" checked><span class="swatch" style="background:#22272c"></span>Rack top and handles (approx.)</label>
       </div>
@@ -89,6 +90,7 @@ dd { margin: 0; font-family: var(--font-data); font-size: 12px; text-align: righ
       <p class="label">Dimensions</p>
       <dl>
         <dt>Pedestal</dt><dd>Ø205 × 32 mm</dd>
+        <dt>With injector pod</dt><dd>245 mm deep, 50 mm tall</dd>
         <dt>Deck</dt><dd>4 mm + 12 mm air gap</dd>
         <dt>AP tabs</dt><dd>6 × on Ø198.6 mm</dd>
         <dt>Fan</dt><dd>120 × 25 mm, 105 mm holes</dd>
@@ -100,7 +102,7 @@ dd { margin: 0; font-family: var(--font-data); font-size: 12px; text-align: righ
       </dl>
     </div>
 
-    <p class="note">The base and deck are the printed STLs. The AP, fan and rack top are simplified stand-ins. The handles are drawn 239 mm apart, as measured.</p>
+    <p class="note">The base and deck are the printed STLs. The AP, fan, injector and rack top are simplified stand-ins. The handles are drawn 239 mm apart, as measured.</p>
   </aside>
 </div>
 
@@ -114,6 +116,7 @@ dd { margin: 0; font-family: var(--font-data); font-size: 12px; text-align: righ
   // model constants (mm), from u6pro_top_mount.scad
   const BASE_H = 32, DECK_T = 4, FLOOR_T = 3, AP_D = 197, AP_H = 35, AIR_GAP = 12;
   const FAN = 120, FAN_T = 25;
+  const INJ = [62, 93, 35], POD_Y0 = 103.5, INJ_CLEAR = 0.6, RACK_SHIFT = 19.85;
   const HANDLE_GAP = 239; // measured inside gap between the rack's top handles
 
   const stage = document.getElementById('stage');
@@ -211,15 +214,26 @@ dd { margin: 0; font-family: var(--font-data); font-size: 12px; text-align: righ
     const a = arrow(new THREE.Vector3(70 * c, 70 * s2, 0), new THREE.Vector3(135 * c, 135 * s2, 0)); airOut.push(a); air.add(a);
   }
 
+  // injector stand-in, on its long edge in the rear pod, ports facing +X
+  const injGeo = new THREE.ExtrudeGeometry(roundedRect(INJ[1], INJ[0], 6), { depth: INJ[2], bevelEnabled: false });
+  const pod = new THREE.Mesh(injGeo, mat(0xc9ced3, { roughness: 0.4 }));
+  pod.rotation.x = Math.PI / 2;  // extrusion depth now runs along -Y
+  pod.position.set(0, POD_Y0 + INJ_CLEAR + INJ[2], FLOOR_T + INJ[0] / 2);
+  [-12, 12].forEach(function (z) {
+    const p = new THREE.Mesh(new THREE.BoxGeometry(1, 12, 14), mat(0x2b3036));
+    p.position.set(INJ[1] / 2 + 0.2, z, INJ[2] / 2); pod.add(p);
+  });
+  world.add(pod);
+
   // rack top stand-in: frame top, acrylic cover and two side handles (approximate)
   const rack = new THREE.Group(); world.add(rack);
   const top = new THREE.Mesh(new THREE.BoxGeometry(281, 260, 6), mat(0x22272c, { roughness: 0.8 }));
-  top.position.z = -3; rack.add(top);
+  top.position.set(0, RACK_SHIFT, -3); rack.add(top);
   [-1, 1].forEach(function (s) {
     const h = new THREE.Group();
     const bar = new THREE.Mesh(new THREE.BoxGeometry(14, 120, 8), mat(0x1a1e22)); bar.position.z = 29; h.add(bar);
     [-52, 52].forEach(function (y) { const leg = new THREE.Mesh(new THREE.BoxGeometry(14, 14, 33), mat(0x1a1e22)); leg.position.set(0, y, 16.5); h.add(leg); });
-    h.position.set(s * (HANDLE_GAP / 2 + 7), 0, 0); rack.add(h);
+    h.position.set(s * (HANDLE_GAP / 2 + 7), RACK_SHIFT, 0); rack.add(h);
   });
 
   function layout(explode) {
@@ -233,7 +247,7 @@ dd { margin: 0; font-family: var(--font-data); font-size: 12px; text-align: righ
   const ex = document.getElementById('explode'), exVal = document.getElementById('explode-val');
   ex.addEventListener('input', function () { layout(+ex.value); exVal.textContent = ex.value + ' mm'; });
   function bind(id, obj) { const el = document.getElementById(id); el.addEventListener('change', function () { obj.visible = el.checked; }); obj.visible = el.checked; }
-  bind('t-ap', ap); bind('t-deck', deck); bind('t-inj', inj); bind('t-base', base); bind('t-rack', rack);
+  bind('t-ap', ap); bind('t-deck', deck); bind('t-inj', inj); bind('t-pod', pod); bind('t-base', base); bind('t-rack', rack);
 
   const airBtn = document.getElementById('air');
   airBtn.addEventListener('click', function () {

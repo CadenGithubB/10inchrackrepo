@@ -2,16 +2,17 @@
 
 A round pedestal that sits on top of the DeskPi RackMate T2, on its vented acrylic top cover. A 120 mm fan inside pulls warm air up out of the rack and blows it across the back of the UniFi U6 Pro, which sits on ribs 12 mm above the deck. The air leaves sideways through the gaps between the six tabs that hold the AP in place.
 
-The PoE injector isn't in the pedestal. It goes somewhere inside the rack, and the PoE cable comes up the back and in under the AP.
+The U-PoE-AT injector stands on its long edge in a pod moulded onto the back of the base. A short patch cable runs from its PoE port in under the AP.
 
 ![Assembly](images/assembly.png)
 ![Exploded](images/exploded.png)
+![From the back, with the injector pod](images/rear.png)
 
 ## Parts
 
 | File | Qty | Size (mm) | Notes |
 |---|---|---|---|
-| [`stl/base.stl`](stl/base.stl) | 1 | Ø205 × 32 | Prints floor-down. No supports. |
+| [`stl/base.stl`](stl/base.stl) | 1 | 205 × 245 × 50 | Round base plus the injector pod. Prints floor-down with no supports, on a 256 mm bed. |
 | [`stl/deck.stl`](stl/deck.stl) | 1 | Ø205 × 24 | Prints flat with the ribs and tabs up. No supports. |
 | [`stl/fit_check.stl`](stl/fit_check.stl) | 1 | Ø205 × 24 | Optional. The deck's outer ring with the AP tabs, plus the floor with the fan guides and screw holes. Print it first to check the fit. |
 
@@ -19,16 +20,18 @@ The PoE injector isn't in the pedestal. It goes somewhere inside the rack, and t
 - **Deck:** 4 × M3×10 screws and 4 × M3 nuts.
 - **Fan:** 4 × M4×35 countersunk screws and 4 × M4 nuts (use M4×25 for a 15 mm slim fan).
 - **Fan:** a 120 mm × 25 mm fan with the standard 105 mm hole spacing. A 5 V USB fan, such as a 5 V Noctua 120 mm, can run off any USB port. Its lead leaves through a small notch at the back of the base.
+- **Patch cable:** a short one, about 15–25 cm, from the injector's PoE port to the AP.
 - **Feet (optional):** stick-on rubber feet. The spare anti-slip pads from the rack kit work, and there are 21 mm recesses for them under the base.
 
 ## How it goes together
 
 1. Slide an M3 nut into the side slot of each of the four posts in the base. The slots open towards the middle.
 2. Set the fan in the base between the corner guides, **airflow arrow pointing up** (the label side faces down). Bolt it down with the M4 screws from underneath. The heads sit flush, so the base stays flat.
-3. Run the fan lead out through the notch at the back.
+3. Run the fan lead out through the notch at the rear left.
 4. Screw the deck down.
-5. Run the PoE cable in from the back, between the two rear tabs. It lies under the AP in the 12 mm gap and plugs into the AP's port.
-6. Set the AP on the ribs, between the tabs.
+5. Drop the injector into the pod on its long edge, with the RJ45 ports facing right and the power socket facing left. Lips at each end stop it sliding when you plug cables in, and the windows above them leave the sockets clear. Plug in the LAN cable and the power cord.
+6. Run the patch cable from the PoE port forward and in under the AP through the gap between the right and rear-right tabs. It lies in the 12 mm gap and plugs into the AP's port.
+7. Set the AP on the ribs, between the tabs.
 
 ![Deck](images/deck.png)
 ![Base from above](images/base_top.png)
@@ -40,7 +43,8 @@ The PoE injector isn't in the pedestal. It goes somewhere inside the rack, and t
   - Intake: a 116 mm opening in the floor.
   - Deck: a 116 mm finger grille over the fan.
   - Exit: about 6,500 mm² round the AP, close to the fan's own open area.
-- **Size:** the pedestal is 205 mm across and 32 mm tall. The top of the AP ends up 83 mm above the rack top.
+- **Size:** the pedestal is 205 mm across and 32 mm tall, and the top of the AP ends up 83 mm above the rack top. With the pod it's 245 mm deep, which leaves 15 mm of the rack's 260 mm. Set it about 20 mm forward of centre so the pod doesn't overhang the back. The pod's walls are 50 mm tall, and the injector stands 65 mm above the rack top.
+- **Injector:** U-PoE-AT, 93 × 62 × 35 mm ([datasheet](https://dl.ui.com/ds/u-poe-at_ds.pdf)). It has 0.6 mm of play each side, and the UACC-PoE+-2.5G is the same size.
 - **Handles:** the measured gap between the rack's two top handles is 239 mm (`handle_gap`). That leaves 17 mm of space on each side of the pedestal.
 - **Not confirmed:** where the U6 Pro's Ethernet port sits on its back. The cable path assumes it's near the middle, where the ceiling mount puts it. The 12 mm gap leaves room for the cable but is tight for a plug with a bulky boot.
 - **Not locked:** the AP sits between the tabs under its own weight (580 g). It isn't locked in.

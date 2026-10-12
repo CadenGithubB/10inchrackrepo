@@ -21,8 +21,18 @@
 //        +-----|    |-------+
 //    ===== rack top cover =====        air in from the rack
 //
-//  The PoE cable comes in from the back, under the AP, through the
-//  gap between two tabs. The injector lives somewhere else.
+//  The U-PoE-AT injector stands on its long edge in a pod moulded onto
+//  the back of the base, ports facing right. A short patch cable runs
+//  from its PoE port round to the back of the pedestal and in under the
+//  AP through the gap between the two rear tabs.
+//
+//      top view                 front (-Y)
+//                  .----------.
+//                 /  U6 Pro    \
+//                |   pedestal   |
+//                 \            /
+//              [==|  injector  |==]   <- pod, plugs out both ends
+//                               rear (+Y)
 //
 //  Coordinates: origin = centre of the puck on the rack top surface,
 //  X = left/right, Y = front(-)/back(+), Z = up.
@@ -45,6 +55,15 @@ fan_hole_pitch = 105;  // standard 120 mm fan screw spacing
 
 /* [Rack] */
 handle_gap = 239;      // measured inside gap between the rack's two top handles
+rack_depth = 260;      // outside depth of the rack (spec)
+
+/* [Injector pod] */
+inj      = [62, 93, 35]; // U-PoE-AT: width, length (ports end to power end), thickness
+inj_clear = 0.6;
+pod_wall = 2.5;
+pod_h    = 50;         // pod wall height; the injector stands 62 mm tall
+pod_lip  = 4.5;        // end lips either side of the port windows
+pod_lip_h = 5;         // lip along the bottom of each port window
 
 /* [Fit] */
 ap_clear  = 0.8;       // radial play around the AP inside the tabs
@@ -68,7 +87,9 @@ intake_d = 116;        // opening in the floor under the fan
 grille_d = 116;        // grille over the fan in the deck
 grille_bar = 2.4;      // grille bar width
 grille_pitch = 10;     // ring spacing
-fan_notch_w = 10;      // small notch at the back for the fan's USB lead
+vent_w   = 4;
+fan_notch_w = 10;      // small notch for the fan's USB lead (rear left, clear of the pod)
+fan_notch_a = 150;
 fan_notch_h = 8;
 
 /* [Hardware] */
@@ -94,9 +115,18 @@ pocket_d = ap_d + 2 * ap_clear;     // circle the tabs sit on
 puck_d   = pocket_d + 2 * rim_t;    // outer diameter of base and deck
 base_h   = floor_t + fan_thick + plenum;
 fan_holes = [for (sx = [-1, 1], sy = [-1, 1]) [sx, sy] * fan_hole_pitch / 2];
+// pod cavity: injector on its edge, length along X, thickness along Y
+pod_in   = [inj[1] + 2 * inj_clear, inj[2] + 2 * inj_clear];
+pod_y0   = puck_d / 2 + 1;                       // cavity front face, just behind the round wall
+pod_y1   = pod_y0 + pod_in[1];
+pod_back = pod_y1 + pod_wall;                    // furthest point from the centre
+total_depth = puck_d / 2 + pod_back;
 
 assert(puck_d < handle_gap, str("Pedestal (", puck_d, " mm) won't fit between the handles (", handle_gap, " mm)"));
 assert(boss_r - boss_d / 2 > (fan_size / 2 + fan_clear) * sqrt(2), "Screw bosses hit the fan's corners");
+assert(total_depth < rack_depth, str("Pedestal + pod (", total_depth, " mm) is deeper than the rack (", rack_depth, " mm)"));
+echo(str("Pedestal + pod depth ", total_depth, " mm of the rack's ", rack_depth, " mm; centre the pedestal ",
+         (pod_back - puck_d / 2) / 2, " mm forward of the rack centre"));
 echo(str("Clearance to each handle ", (handle_gap - puck_d) / 2, " mm"));
 echo(str("Puck diameter ", puck_d, " mm, base height ", base_h,
          " mm, AP top at ", base_h + deck_t + air_gap + ap_h, " mm above the rack top"));
@@ -120,6 +150,12 @@ module base() {
                 translate([boss_r, 0, 0]) cylinder(d = boss_d, h = base_h);
                 translate([puck_d / 2 - wall / 2 - boss_d / 2, 0, 0]) cylinder(d = boss_d, h = base_h);
             }
+            // injector pod on the back, minus the inside of the round base
+            difference() {
+                hull() for (x = [-1, 1], y = [puck_d / 2 - 18, pod_back - 4])
+                    translate([x * (pod_in[0] / 2 + pod_wall - 4), y, 0]) cylinder(r = 4, h = pod_h);
+                translate([0, 0, floor_t]) cylinder(d = puck_d - 2 * wall, h = pod_h);
+            }
             // low corner guides that locate the fan frame
             for (sx = [-1, 1], sy = [-1, 1])
                 translate([sx * (fan_size / 2 + fan_clear), sy * (fan_size / 2 + fan_clear), 0])
@@ -141,9 +177,18 @@ module base() {
             translate([0, 0, base_h - nut_depth - nut_h / 2])
                 hull() { hex(nut_af, nut_h); translate([-boss_d, 0, 0]) hex(nut_af, nut_h); }
         }
-        // fan lead notch at the back, open at the bottom
-        translate([-fan_notch_w / 2, puck_d / 2 - wall - 2, -eps])
-            cube([fan_notch_w, wall + 3, fan_notch_h]);
+        // fan lead notch, open at the bottom
+        rotate(fan_notch_a) translate([puck_d / 2 - wall - 2, -fan_notch_w / 2, -eps])
+            cube([wall + 3, fan_notch_w, fan_notch_h]);
+        // injector cavity, open on top
+        translate([-pod_in[0] / 2, pod_y0, floor_t]) cube([pod_in[0], pod_in[1], pod_h]);
+        // port / power windows in both end walls, leaving lips that stop it sliding
+        for (s = [-1, 1])
+            translate([s > 0 ? pod_in[0] / 2 - 1 : -pod_in[0] / 2 - pod_wall - 1, pod_y0 + pod_lip, floor_t + pod_lip_h])
+                cube([pod_wall + 2, pod_in[1] - 2 * pod_lip, pod_h]);
+        // drain / vent slots in the pod floor
+        for (x = [-35 : 10 : 35])
+            translate([x - vent_w / 2, pod_y0 + 6, -1]) cube([vent_w, pod_in[1] - 12, floor_t + 2]);
         // rubber foot recesses under the bosses
         for (a = boss_angles) rotate(a) translate([boss_r - 6, 0, -eps])
             cylinder(d = foot_d, h = foot_depth + eps);
@@ -206,6 +251,11 @@ module ap() {
     }
 }
 
+module injector() {
+    color("Gainsboro") translate([-inj[1] / 2, pod_y0 + inj_clear, floor_t])
+        cube([inj[1], inj[2], inj[0]]);
+}
+
 module fan() {
     color("#3a3f45") translate([0, 0, floor_t]) difference() {
         translate([-fan_size / 2, -fan_size / 2, 0]) cube([fan_size, fan_size, fan_thick]);
@@ -238,7 +288,7 @@ else if (part == "deck") deck();
 else if (part == "fit_check") fit_check();
 else {
     color("DimGray") base();
-    if (show_devices) fan();
+    if (show_devices) { fan(); injector(); }
     translate([0, 0, base_h + explode]) {
         color("SlateGray") deck();
         if (show_devices) translate([0, 0, deck_t + air_gap + explode]) ap();
