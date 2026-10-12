@@ -16,7 +16,7 @@
 //    =====[ring]=====[ring]=====      acrylic top cover
 //             [ 120 fan ]             inside the rack, blowing up
 //
-//  The PoE cable comes in at the back, where one rib is left out.
+//  The PoE cable comes in from the front, between two ribs.
 //  Coordinates: origin = centre on the top surface of the cover,
 //  X = left/right, Y = front(-)/back(+), Z = up.
 //
@@ -53,7 +53,7 @@ tab_w    = 14;
 tab_up   = 8;           // how far the tabs reach up the side of the AP
 rib_w    = 4;
 rib_step = 30;          // a rib every 30 degrees ...
-cable_gap_a = 90;       // ... except here (rear), where the PoE cable comes in
+cable_gap_a = -1;       // ... except at this angle (-1 = none; the cable fits between ribs)
 
 /* [Hardware] */
 bolt_d   = 4.5;         // M4 clearance

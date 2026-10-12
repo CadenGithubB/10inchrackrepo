@@ -24,7 +24,7 @@ Hardware:
 1. Find the middle of the top cover. Mark four holes on a 105 mm square there and drill them 4.5 mm. You can skip drilling if the cover's vent slots happen to line up. Drill acrylic slowly, with a sharp bit and something flat underneath, or it can crack.
 2. Hold the fan under the cover, **airflow arrow pointing up**, and the riser on top with its open middle over the fan.
 3. Put the bolts down through the riser, the cover and the fan, and tighten the nuts underneath. The heads sit flush in the ring, under the AP.
-4. Run the PoE cable in at the back. One rib is left out there, so the cable lies flat under the AP and plugs into its port.
+4. Bring the PoE cable up the front of the rack and in under the AP from the front, between two ribs. The lanes between ribs are about 50 mm wide at the edge, so the cable lies flat in the 10 mm gap and plugs into the AP's port.
 5. Set the AP on the ribs, between the orange tabs.
 
 ## Fit and dimensions
@@ -42,6 +42,6 @@ Same material advice as the shelf: ABS or ASA (PETG works too). Use 0.2 mm layer
 
 ## Editing
 
-Everything is in [`u6pro_riser.scad`](u6pro_riser.scad). The most useful settings are `air_gap`, `fan_thick`, `tab_n`/`tab_w`/`tab_up`, `ap_clear` and `cable_gap_a`, which sets where the rib is left out for the cable. Run `./build.sh` to rebuild the STL and images.
+Everything is in [`u6pro_riser.scad`](u6pro_riser.scad). The most useful settings are `air_gap`, `fan_thick`, `tab_n`/`tab_w`/`tab_up`, `ap_clear` and `cable_gap_a`, which can leave one rib out if you ever want a wider cable lane (-1 = none). Run `./build.sh` to rebuild the STL and images.
 
 The earlier designs, the round fan pedestal and the injector pod, are in the git history.
