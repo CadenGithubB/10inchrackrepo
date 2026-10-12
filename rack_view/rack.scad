@@ -1,7 +1,7 @@
 // whole-rack composite (rough stand-in for the DeskPi RackMate T2, 12U)
 U = 44.45; top_z = 566.4; floor_z = -30; rail_x = 118.25; depth = 255;
 mac_u = 1;   // shelf bottom at U index (0-based)
-flex_u = 11;
+flex_u = 10;
 ped_y = depth / 2 - 19.85;
 module post(x, y) translate([x - 10, y, floor_z]) cube([20, 20, top_z - floor_z]);
 which = "all";
