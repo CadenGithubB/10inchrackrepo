@@ -8,6 +8,7 @@ The left and right versions are mirror images. The left holster goes on the left
 
 ![Holsters with injectors, on a stand-in rail](images/front.png)
 ![Empty holsters](images/empty.png)
+![On the rear rails, from behind the rack](../rack_view/images/rack_holsters.png)
 
 ## Parts
 

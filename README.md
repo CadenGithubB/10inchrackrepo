@@ -18,11 +18,25 @@ Both builds use the same separators.
 | [`print_order_abs/`](print_order_abs/) | Print-ready STLs and an order sheet for the riser and both holsters in ABS (also zipped as `print_order_abs.zip`) |
 | [`rack_view/`](rack_view/) | A 3D viewer of the whole rack: PDU, this shelf, brush panel, Flex Mini mount, UCG Ultra mount, holsters and the AP. Open `rack_view/viewer.html` in a browser. The Flex Mini parts are read from `~/Documents/ChatGPT/10 in rack/v4-slot-retainer` when rebuilding |
 
-![Mac Studio and two M1 minis in the cradle](images/assembly_m1.png)
+![The whole rack: PDU, Mac shelf, brush panel, Flex Mini mount, UCG Ultra mount, injector holsters and the U6 Pro on top](rack_view/images/rack_front34.png)
+
+| U6 Pro riser on the top cover | Injector holsters on the rear rails |
+|---|---|
+| ![](rack_view/images/rack_top.png) | ![](rack_view/images/rack_holsters.png) |
+
+### The Mac shelf in the rack
+
+![Mac Studio and two M1 minis in the cradle, in the RackMate T2 at U2-U6](images/rack_m1.png)
 
 | 2× M1 (now) | 2× M4 (later) | M1 + M4 |
 |---|---|---|
-| ![](images/front_m1.png) | ![](images/front_m4.png) | ![](images/front_m1_m4.png) |
+| ![](images/rack_front_m1.png) | ![](images/rack_front_m4.png) | ![](images/rack_front_m1_m4.png) |
+
+| From the front, 2× M4 | From the back, 2× M4 |
+|---|---|
+| ![](images/rack_m4.png) | ![](images/rack_rear_m4.png) |
+
+The rack itself and the other gear are rough stand-ins. The printed parts come from their real STLs. To redo these pictures, run `rack_view/build.sh` and then `rack_view/render.sh`. The shelf-only renders are still in `images/` (`assembly_m1.png`, `front_m1.png` and so on) and `build.sh` regenerates them.
 
 ## Why the Studio stands on its side
 

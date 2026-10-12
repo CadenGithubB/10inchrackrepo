@@ -8,6 +8,7 @@ The part that touches the cover is an open web, not a solid plate: an outer ring
 
 ![Assembly](images/assembly.png)
 ![Riser](images/riser.png)
+![On the rack](../rack_view/images/rack_top.png)
 
 ## Parts
 
