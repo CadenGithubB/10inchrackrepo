@@ -23,4 +23,5 @@ img() { # name, camera, extra -D args...
 img assembly   0,0,0,60,0,30,0
 img exploded   0,0,0,62,0,30,0  -D explode=60
 img base_top   0,0,0,0,0,0,0    -D 'part="base"' --projection=o
+img deck       0,0,0,40,0,25,0  -D 'part="deck"'
 img fit_check  0,0,0,45,0,20,0  -D 'part="fit_check"'

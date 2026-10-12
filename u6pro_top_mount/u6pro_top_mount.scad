@@ -1,25 +1,28 @@
 // =====================================================================
-//  UniFi U6 Pro + PoE injector pedestal for the top of a 10" rack
-//  (DeskPi RackMate T2, sitting on its acrylic top cover)
+//  UniFi U6 Pro fan pedestal for the top of a 10" rack
+//  (DeskPi RackMate T2, sitting on its vented acrylic top cover)
 //
-//  A round two-part puck the same size as the AP:
-//    * base  - sits on the rack top. Holds the U-PoE-AT injector in a
-//              bay with side ribs and end stops, and has cable notches
-//              front and back plus wall/floor vents.
-//    * deck  - screws onto the base with 4x M3x10 + 4x M3 nuts. Its
-//              underside holds the injector down; its top is a shallow
-//              cradle the U6 Pro sits in. The injector's PoE port feeds
-//              the AP through the hole in the middle.
+//  A round two-part puck the same size as the AP, with a 120 mm fan
+//  inside. The fan pulls warm air up out of the rack through the top
+//  cover and blows it across the back of the AP, then out sideways
+//  through the gaps between the locating tabs.
+//    * base  - sits on the rack top. Solid wall, open floor under the
+//              fan, fan bolted to the floor with 4x M4 countersunk screws.
+//    * deck  - screws onto the base with 4x M3x10 + 4x M3 nuts. Finger
+//              grille over the fan, radial ribs the AP rests on (with an
+//              air gap under it) and 6 tabs that keep it centred.
 //
-//      side view                 top view (deck removed)
-//                                        rear (+Y)
-//        ____________               ___|notch|___
-//       /    U6 Pro   \            /  LAN  PoE   \
-//    |=[==============]=| deck    |   [========]   |
-//    |   [ injector ]   | base    |   [injector]   |
-//    +------------------+         |   [========]   |
-//    ===== rack top =====          \___|notch|___/
-//                                       front (-Y)
+//      side view
+//          ________________
+//         /     U6 Pro     \           air out between the tabs
+//    <-- |_|==============|_| -->      <- 12 mm gap, ribs hold the AP
+//        |=====grille=======| deck
+//        |   [ 120 fan ]    | base
+//        +-----|    |-------+
+//    ===== rack top cover =====        air in from the rack
+//
+//  The PoE cable comes in from the back, under the AP, through the
+//  gap between two tabs. The injector lives somewhere else.
 //
 //  Coordinates: origin = centre of the puck on the rack top surface,
 //  X = left/right, Y = front(-)/back(+), Z = up.
@@ -36,37 +39,37 @@ explode = 0;           // [0:5:80] lifts the deck and AP in the assembly preview
 /* [Devices] */
 ap_d   = 197;          // U6 Pro diameter (Ubiquiti spec)
 ap_h   = 35;           // U6 Pro height
-inj    = [62, 93, 35]; // U-PoE-AT: width (X), length (Y, ports end to power end), height
-inj_corner_r = 6;      // estimated plan-view corner radius, preview only
+fan_size = 120;
+fan_thick = 25;        // 25 mm standard; 15 mm slim also fits
+fan_hole_pitch = 105;  // standard 120 mm fan screw spacing
 
 /* [Rack] */
 handle_gap = 239;      // measured inside gap between the rack's two top handles
 
 /* [Fit] */
-ap_clear  = 0.8;       // radial play around the AP in the cradle
-inj_clear = 0.6;       // play around the injector on each side and above it
+ap_clear  = 0.8;       // radial play around the AP inside the tabs
+fan_clear = 0.6;       // play around the fan frame
 
 /* [Puck] */
 wall     = 3;          // base outer wall
-floor_t  = 2.4;        // base floor
-deck_t   = 5;          // deck plate
-rim_h    = 7;          // cradle rim height above the deck
-rim_t    = 3.2;        // cradle rim thickness
-// injector bay position: ports end faces +Y (rear); keeps room for plugs at both ends
-inj_y    = -2;         // centre of the injector along Y
+floor_t  = 3;          // base floor (takes the countersunk fan screws)
+plenum   = 4;          // space between the top of the fan and the deck
+deck_t   = 4;          // deck plate
+air_gap  = 12;         // AP rests this far above the deck so air can get out
+rim_t    = 3.2;        // tab thickness
+tab_n    = 6;          // locating tabs around the AP
+tab_w    = 14;
+tab_up   = 8;          // how far the tabs reach up the side of the AP
+rib_n    = 12;         // radial ribs the AP rests on
+rib_w    = 3;
 
-/* [Injector bay] */
-rib_t    = 2.4;        // side rib thickness
-rib_h    = 22;         // side rib height above the floor
-stop_t   = 3;          // end stop thickness
-stop_h   = 5;          // end stops stay below the RJ45 and C6 sockets
-
-/* [Cables and vents] */
-center_hole_d = 50;    // PoE patch cable up to the AP, wide enough to pass a plug
-notch_w  = 30;         // cable notches at front and rear, open at the bottom
-notch_h  = 14;
-vent_w   = 4;
-vent_h   = 20;
+/* [Air and cables] */
+intake_d = 116;        // opening in the floor under the fan
+grille_d = 116;        // grille over the fan in the deck
+grille_bar = 2.4;      // grille bar width
+grille_pitch = 10;     // ring spacing
+fan_notch_w = 10;      // small notch at the back for the fan's USB lead
+fan_notch_h = 8;
 
 /* [Hardware] */
 screw_d  = 3.4;        // M3 clearance
@@ -75,9 +78,11 @@ head_h   = 3.2;
 nut_af   = 5.7;        // M3 nut across flats + play
 nut_h    = 2.7;
 boss_d   = 11;
-boss_r   = 91;         // boss centre radius
+boss_r   = 93;         // boss centre radius, clear of the fan's corners
 boss_angles = [45, 135, 225, 315];
 nut_depth = 6;         // nut slot sits this far below the boss top
+fan_hole_d = 4.5;      // M4 clearance
+fan_csk_d  = 8.6;      // M4 countersunk head
 foot_d   = 21;         // optional recesses for stick-on rubber feet
 foot_depth = 1;
 
@@ -85,32 +90,27 @@ $fn = 96;
 eps = 0.01;
 
 // ---------- derived ----------
-pocket_d = ap_d + 2 * ap_clear;     // cradle inner diameter
+pocket_d = ap_d + 2 * ap_clear;     // circle the tabs sit on
 puck_d   = pocket_d + 2 * rim_t;    // outer diameter of base and deck
-base_h   = floor_t + inj[2] + inj_clear;  // deck underside rests here
-bay_w    = inj[0] + 2 * inj_clear;
-bay_l    = inj[1] + 2 * inj_clear;
-bay_y0   = inj_y - bay_l / 2;
-bay_y1   = inj_y + bay_l / 2;
+base_h   = floor_t + fan_thick + plenum;
+fan_holes = [for (sx = [-1, 1], sy = [-1, 1]) [sx, sy] * fan_hole_pitch / 2];
 
 assert(puck_d < handle_gap, str("Pedestal (", puck_d, " mm) won't fit between the handles (", handle_gap, " mm)"));
+assert(boss_r - boss_d / 2 > (fan_size / 2 + fan_clear) * sqrt(2), "Screw bosses hit the fan's corners");
 echo(str("Clearance to each handle ", (handle_gap - puck_d) / 2, " mm"));
 echo(str("Puck diameter ", puck_d, " mm, base height ", base_h,
-         " mm, AP top at ", base_h + deck_t + ap_h, " mm above the rack top"));
+         " mm, AP top at ", base_h + deck_t + air_gap + ap_h, " mm above the rack top"));
+echo(str("Air exit area round the AP about ",
+         round(PI * pocket_d * air_gap - tab_n * tab_w * air_gap), " mm2"));
 
 // ---------- helpers ----------
-module rounded_box(size, r) {
-    hull() for (x = [r, size[0] - r], y = [r, size[1] - r])
-        translate([x, y, 0]) cylinder(r = r, h = size[2]);
-}
-
 module hex(af, h) { cylinder(d = af / cos(30), h = h, $fn = 6); }
 
 // ---------- base ----------
 module base() {
     difference() {
         union() {
-            // outer shell
+            // outer shell, solid wall so the fan pulls only from below
             difference() {
                 cylinder(d = puck_d, h = base_h);
                 translate([0, 0, floor_t]) cylinder(d = puck_d - 2 * wall, h = base_h);
@@ -120,65 +120,81 @@ module base() {
                 translate([boss_r, 0, 0]) cylinder(d = boss_d, h = base_h);
                 translate([puck_d / 2 - wall / 2 - boss_d / 2, 0, 0]) cylinder(d = boss_d, h = base_h);
             }
-            // injector side ribs
-            for (s = [-1, 1])
-                translate([s > 0 ? bay_w / 2 : -bay_w / 2 - rib_t, bay_y0 - stop_t, 0])
-                    cube([rib_t, bay_l + 2 * stop_t, floor_t + rib_h]);
-            // low end stops
-            for (y = [bay_y0 - stop_t, bay_y1])
-                translate([-bay_w / 2 - rib_t, y, 0])
-                    cube([bay_w + 2 * rib_t, stop_t, floor_t + stop_h]);
+            // low corner guides that locate the fan frame
+            for (sx = [-1, 1], sy = [-1, 1])
+                translate([sx * (fan_size / 2 + fan_clear), sy * (fan_size / 2 + fan_clear), 0])
+                    rotate(atan2(sy, sx)) translate([-4, -10, 0]) cube([8, 20, floor_t + 6]);
         }
-        // screw holes and side-entry nut slots (open towards the middle)
+        // fan pocket inside the corner guides
+        translate([-(fan_size / 2 + fan_clear), -(fan_size / 2 + fan_clear), floor_t])
+            cube([fan_size + 2 * fan_clear, fan_size + 2 * fan_clear, base_h]);
+        // intake under the fan
+        translate([0, 0, -1]) cylinder(d = intake_d, h = floor_t + 2);
+        // fan screws, countersunk from below so the base sits flat
+        for (p = fan_holes) translate([p[0], p[1], 0]) {
+            translate([0, 0, -1]) cylinder(d = fan_hole_d, h = floor_t + 2);
+            translate([0, 0, -eps]) cylinder(d1 = fan_csk_d, d2 = fan_hole_d, h = (fan_csk_d - fan_hole_d) / 2);
+        }
+        // deck screw holes and side-entry nut slots (open towards the middle)
         for (a = boss_angles) rotate(a) translate([boss_r, 0, 0]) {
             translate([0, 0, base_h - nut_depth - 8]) cylinder(d = screw_d - 0.5, h = 20);
             translate([0, 0, base_h - nut_depth - nut_h / 2])
                 hull() { hex(nut_af, nut_h); translate([-boss_d, 0, 0]) hex(nut_af, nut_h); }
         }
-        // cable notches, front and rear
-        for (s = [-1, 1])
-            translate([-notch_w / 2, s > 0 ? puck_d / 2 - wall - 2 : -puck_d / 2 - 1, -eps])
-                cube([notch_w, wall + 3, notch_h]);
-        // wall vents
-        for (a = [0 : 15 : 359])
-            if (min([for (b = concat(boss_angles, [90, 270])) abs(((a - b + 540) % 360) - 180)]) > 14)
-                rotate(a) translate([puck_d / 2 - wall - 1, -vent_w / 2, floor_t + 6])
-                    cube([wall + 2, vent_w, vent_h]);
-        // floor vents under the injector and to its sides
-        for (x = [-80 : 10 : 80], y = [-60 : 30 : 60])
-            if (norm([x, y]) < puck_d / 2 - 22 && abs(abs(x) - (bay_w / 2 + rib_t / 2)) > 5)
-                translate([x - vent_w / 2, y - 11, -eps]) cube([vent_w, 22, floor_t + 2 * eps]);
+        // fan lead notch at the back, open at the bottom
+        translate([-fan_notch_w / 2, puck_d / 2 - wall - 2, -eps])
+            cube([fan_notch_w, wall + 3, fan_notch_h]);
         // rubber foot recesses under the bosses
-        for (a = boss_angles) rotate(a) translate([boss_r - 12, 0, -eps])
+        for (a = boss_angles) rotate(a) translate([boss_r - 6, 0, -eps])
             cylinder(d = foot_d, h = foot_depth + eps);
     }
 }
 
 // ---------- deck ----------
+module grille() {
+    // concentric rings joined by spokes; what's left here gets cut out
+    difference() {
+        cylinder(d = grille_d, h = deck_t + 2);
+        for (r = [grille_pitch : grille_pitch : grille_d / 2 - 1])
+            difference() {
+                cylinder(r = r + grille_bar / 2, h = deck_t + 2);
+                translate([0, 0, -1]) cylinder(r = r - grille_bar / 2, h = deck_t + 4);
+            }
+        cylinder(r = grille_pitch - grille_bar / 2 + 0.01, h = deck_t + 2);  // solid hub
+        for (a = [0 : 60 : 359]) rotate(a) translate([0, -grille_bar / 2, 0])
+            cube([grille_d, grille_bar, deck_t + 2]);
+    }
+}
+
 module deck() {
+    tab_angles = [for (i = [0 : tab_n - 1]) i * 360 / tab_n];
+    rib_angles = [for (i = [0 : rib_n - 1]) 15 + i * 360 / rib_n];
     difference() {
         union() {
             cylinder(d = puck_d, h = deck_t);
-            // cradle rim, chamfered inside so the AP drops in
-            difference() {
-                cylinder(d = puck_d, h = deck_t + rim_h);
-                translate([0, 0, deck_t - eps]) cylinder(d = pocket_d, h = rim_h + 1);
-                translate([0, 0, deck_t + rim_h - 1.5])
-                    cylinder(d1 = pocket_d, d2 = pocket_d + 3, h = 1.5 + eps);
-            }
+            // radial ribs: the AP rests on these, air flows out between them
+            for (a = rib_angles) rotate(a)
+                translate([grille_d / 2 + 2, -rib_w / 2, 0])
+                    cube([pocket_d / 2 - grille_d / 2 - 2, rib_w, deck_t + air_gap]);
+            // locating tabs round the edge, chamfered inside so the AP drops in
+            for (a = tab_angles) rotate(a)
+                intersection() {
+                    difference() {
+                        cylinder(d = puck_d, h = deck_t + air_gap + tab_up);
+                        translate([0, 0, -1]) cylinder(d = pocket_d, h = 100);
+                        translate([0, 0, deck_t + air_gap + tab_up - 1.5])
+                            cylinder(d1 = pocket_d, d2 = pocket_d + 3, h = 1.5 + eps);
+                    }
+                    translate([0, -tab_w / 2, 0]) cube([puck_d, tab_w, 100]);
+                }
         }
-        // cable hole to the AP's port
-        translate([0, 0, -1]) cylinder(d = center_hole_d, h = deck_t + 2);
-        // screws, counterbored so the heads sit below the AP
+        // grille over the fan
+        translate([0, 0, -1]) grille();
+        // screws, counterbored
         for (a = boss_angles) rotate(a) translate([boss_r, 0, 0]) {
             translate([0, 0, -1]) cylinder(d = screw_d, h = deck_t + 2);
-            translate([0, 0, deck_t - head_h]) cylinder(d = head_d, h = head_h + rim_h + 1);
+            translate([0, 0, deck_t - head_h]) cylinder(d = head_d, h = head_h + 1);
         }
-        // radial vent slots under the AP, kept off the injector's top
-        for (a = [0 : 15 : 359])
-            if (min([for (b = boss_angles) abs(((a - b + 540) % 360) - 180)]) > 10)
-                rotate(a) hull() for (r = [62, 80])
-                    translate([r, 0, -1]) cylinder(d = vent_w, h = deck_t + 2, $fn = 24);
     }
 }
 
@@ -190,26 +206,29 @@ module ap() {
     }
 }
 
-module injector() {
-    color("Gainsboro") translate([-inj[0] / 2, inj_y - inj[1] / 2, floor_t])
-        rounded_box(inj, inj_corner_r);
+module fan() {
+    color("#3a3f45") translate([0, 0, floor_t]) difference() {
+        translate([-fan_size / 2, -fan_size / 2, 0]) cube([fan_size, fan_size, fan_thick]);
+        translate([0, 0, -1]) cylinder(d = fan_size - 4, h = fan_thick + 2);
+        for (p = fan_holes) translate([p[0], p[1], -1]) cylinder(d = fan_hole_d, h = fan_thick + 2);
+    }
+    color("#55606a") translate([0, 0, floor_t]) cylinder(d = 40, h = fan_thick - 2);
 }
 
 // ---------- fit check ----------
-// A thin slice of the cradle rim (AP fit) with a short slice of the
-// injector bay inside it (injector fit). About 25 g; fits a 256 mm bed.
+// The outer ring of the deck with the AP tabs (AP fit), and the floor
+// slice with the fan corner guides and screw holes (fan fit).
 module fit_check() {
-    difference() {
-        union() {
-            cylinder(d = puck_d, h = 1.2);
-            cylinder(d = puck_d, h = 1.2 + 6);
+    intersection() {
+        deck();
+        difference() {
+            cylinder(d = puck_d + 1, h = 100);
+            translate([0, 0, -1]) cylinder(d = pocket_d - 12, h = 102);
         }
-        translate([0, 0, 1.2]) cylinder(d = pocket_d, h = 10);
-        translate([0, 0, -1]) cylinder(d = pocket_d - 16, h = 5);
     }
     intersection() {
         base();
-        translate([-60, bay_y0 - stop_t - 1, 0]) cube([120, bay_l + 2 * stop_t + 2, floor_t + 8]);
+        cylinder(d = pocket_d - 20, h = floor_t + 6);
     }
 }
 
@@ -219,9 +238,9 @@ else if (part == "deck") deck();
 else if (part == "fit_check") fit_check();
 else {
     color("DimGray") base();
-    if (show_devices) injector();
+    if (show_devices) fan();
     translate([0, 0, base_h + explode]) {
         color("SlateGray") deck();
-        if (show_devices) translate([0, 0, deck_t + explode]) ap();
+        if (show_devices) translate([0, 0, deck_t + air_gap + explode]) ap();
     }
 }
