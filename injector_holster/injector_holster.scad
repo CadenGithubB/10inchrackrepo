@@ -59,6 +59,8 @@ corner_r = 7;          // vertical corners of the cavity, following the injector
 bottom_ch = 4;         // 45-degree chamfer where the shelf meets the walls
 win_r = 5;             // rounded corners on the shelf window
 ledge = 5;             // shelf ledge the injector rests on, each side
+vent_h = 5;             // vent slot height (prints as a short bridge)
+vent_pitch = 9;         // vent spacing
 power_win = [inj[0] + 2 * clear - 2 * ledge, inj[1] + 2 * clear - 6];
 
 $fn = 48;
@@ -99,9 +101,12 @@ module sleeve() {
         // shelf window
         translate([wall + (cav[0] - power_win[0]) / 2, plate_t + (cav[1] - power_win[1]) / 2, -1])
             rrect(power_win[0], power_win[1], win_r, shelf_t + 2);
-        // vents in the back wall
-        for (z = [shelf_t + 12 : 14 : plate_h - 16])
-            translate([wall + 10, -1, z]) cube([cav[0] - 20, plate_t + 2, 6]);
+        // vents in the back wall: a grid of slots
+        for (z = [shelf_t + 10 : vent_pitch : plate_h - 14], k = [0, 1])
+            translate([wall + 7 + k * (cav[0] / 2 - 4), -1, z]) cube([cav[0] / 2 - 10, plate_t + 2, vent_h]);
+        // vents in both side walls
+        for (x = [-1, wall + cav[0] - 1], z = [shelf_t + 10 : vent_pitch : plate_h - 14])
+            translate([x, plate_t + 6, z]) cube([wall + 2, cav[1] - 12, vent_h]);
     }
 }
 

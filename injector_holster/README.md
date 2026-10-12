@@ -2,7 +2,7 @@
 
 An L-shaped holster that holds a U-PoE-AT PoE injector standing on end **inside** the rack, just in front of a rear rail. Its **ear** bolts to the back (outside) face of the rail with two rack screws, 1U apart. A side wall wraps round the rail's inner edge and carries the sleeve forward, into the rack.
 
-The injector slides into the sleeve from the top, and either end can go down. Side walls and front lips keep it from falling forward or sideways. A shelf carries it on 5 mm ledges. The inside corners are rounded (7 mm) to follow the injector's rounded edges, and a 4 mm chamfer where the shelf meets the walls cups its bottom edges. The shelf window is about 53 × 30 mm, big enough for the power plug or both RJ45 plugs.
+The injector slides into the sleeve from the top, and either end can go down. Side walls and front lips keep it from falling forward or sideways. A shelf carries it on 5 mm ledges. The inside corners are rounded (7 mm) to follow the injector's rounded edges, and a 4 mm chamfer where the shelf meets the walls cups its bottom edges. The shelf window is about 53 × 30 mm, big enough for the power plug or both RJ45 plugs. For cooling, the back wall has two columns of vent slots and both side walls have a column each, all 5 mm tall at 9 mm spacing. Together with the open front between the lips and the open top, air can get at all sides of the injector.
 
 The left and right versions are mirror images. The left holster goes on the left rail and the right one on the right, as seen from the front of the rack.
 
