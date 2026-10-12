@@ -9,6 +9,15 @@ There are two ways to build it:
 
 Both builds use the same separators.
 
+**Also in this repo:** the rest of the 12U DeskPi RackMate T2 build.
+
+| Folder | What it is |
+|---|---|
+| [`u6pro_top_mount/`](u6pro_top_mount/) | A low open riser that holds a UniFi U6 Pro on the rack's top cover, with a 120 mm fan bolted under the cover |
+| [`injector_holster/`](injector_holster/) | L-shaped holsters (left and right) that hold a U-PoE-AT injector inside the rack, with an ear on the back of a rear rail |
+| [`print_order_abs/`](print_order_abs/) | Print-ready STLs and an order sheet for the riser and both holsters in ABS (also zipped as `print_order_abs.zip`) |
+| [`rack_view/`](rack_view/) | A 3D viewer of the whole rack: PDU, this shelf, brush panel, Flex Mini mount, UCG Ultra mount, holsters and the AP. Open `rack_view/viewer.html` in a browser. The Flex Mini parts are read from `~/Documents/ChatGPT/10 in rack/v4-slot-retainer` when rebuilding |
+
 ![Mac Studio and two M1 minis in the cradle](images/assembly_m1.png)
 
 | 2× M1 (now) | 2× M4 (later) | M1 + M4 |
