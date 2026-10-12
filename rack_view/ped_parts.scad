@@ -3,4 +3,5 @@ which = "body";
 if (which == "body") difference() { union() { ring_plate(); ribs(); } bolt_holes(); }
 if (which == "tabs") difference() { tabs(); bolt_holes(); }
 if (which == "fan") fan();
-if (which == "ap") ap();
+if (which == "ap") ap_body();
+if (which == "led") ap_led();

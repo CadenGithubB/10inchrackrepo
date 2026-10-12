@@ -26,7 +26,7 @@ Hardware:
 2. Hold the fan under the cover, **airflow arrow pointing up**, and the riser on top with its open middle over the fan.
 3. Put the bolts down through the riser, the cover and the fan, and tighten the nuts underneath. The heads sit flush in the ring, under the AP.
 4. Bring the PoE cable up the front of the rack and in under the AP from the front, between two ribs. The lanes between ribs are about 50 mm wide at the edge, so the cable lies flat in the 10 mm gap and plugs into the AP's port.
-5. Set the AP on the ribs, between the orange tabs.
+5. Set the AP on the ribs, between the tabs.
 
 ## Second set of holes
 
@@ -43,7 +43,7 @@ There's a second set of four bolt holes nearer the middle, on a 71.5 mm square t
 
 ## Printing
 
-Same material advice as the shelf: ABS or ASA (PETG works too). Use 0.2 mm layers, 3–4 walls and 15–20% infill. The design is two colours to match the rack: a dark ring with orange tabs. On a single-colour printer, print it all dark, or swap filament at the height where the ribs end (13 mm) so the tab tops come out orange.
+Same material advice as the shelf: ABS or ASA (PETG works too). Use 0.2 mm layers, 3–4 walls and 15–20% infill.
 
 ## Editing
 

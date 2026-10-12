@@ -6,13 +6,13 @@ set -euo pipefail
 cd "$(dirname "$0")"
 OPENSCAD=${OPENSCAD:-openscad}
 mkdir -p stl
-for w in frame seps studio minis; do "$OPENSCAD" -q -D "which=\"$w\"" -D 'config="m1"' -D '$fn=48' --export-format=binstl -o "stl/mac_$w.stl" mac_parts.scad & done
-for w in base frame switch inj; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/flex_$w.stl" flex_parts.scad & done
-for w in body tabs fan ap; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/ped_$w.stl" ped_parts.scad & done
-for w in mount device cables keystones; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/ucg_$w.stl" ucg_parts.scad & done
+for w in frame seps studio studio_ports minis; do "$OPENSCAD" -q -D "which=\"$w\"" -D 'config="m1"' -D '$fn=48' --export-format=binstl -o "stl/mac_$w.stl" mac_parts.scad & done
+for w in base frame switch inj ports leds; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/flex_$w.stl" flex_parts.scad & done
+for w in body tabs fan ap led; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/ped_$w.stl" ped_parts.scad & done
+for w in mount device cables keystones screen screen_glow ports jacks; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/ucg_$w.stl" ucg_parts.scad & done
 for w in holster_r holster_l inj_r inj_l; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/hol_$w.stl" holster_parts.scad & done
 for w in body front pigtails sockets; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/pdu_$w.stl" pdu_parts.scad & done
-for w in panel brush; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/brush_$w.stl" brush_parts.scad & done
+for w in panel brush cables; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/brush_$w.stl" brush_parts.scad & done
 for w in rack cover sides; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/rack_$w.stl" rack.scad & done
 wait
 python3 - <<'PY'

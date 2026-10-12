@@ -495,14 +495,32 @@ module device_on_edge(dim, foot_d, foot_h, x_left) {
         }
 }
 
-module studio_dummy(x_left) {
-    // underside (intake) facing right = mirrored within its own bay
+// Same frame as device_on_edge: draws children in the device's flat
+// coordinates (x across the front, front face at y = 0, z up from its foot side)
+module on_edge_frame(dim, x_left) {
+    translate([x_left, sep_y0, floor_t]) translate([0, 0, dim[0]]) rotate([0, 90, 0]) children();
+}
+
+// mirrored within its own bay when the underside (intake) faces right
+module studio_mirror(x_left) {
     translate([studio_intake == "right" ? 2 * x_left + studio_dim[2] : 0, 0, 0])
-    mirror([studio_intake == "right" ? 1 : 0, 0, 0]) {
-        color("#c9ccd1", 0.95) device_on_edge(studio_dim, 180, 6, x_left);
-        // front ports hint
-        color("#222") for (i = [0:1]) translate([x_left + 30, sep_y0 - 0.2, floor_t + 150 - i * 14]) cube([8, 0.4, 3]);
-    }
+    mirror([studio_intake == "right" ? 1 : 0, 0, 0]) children();
+}
+
+module studio_body(x_left) studio_mirror(x_left) device_on_edge(studio_dim, 180, 6, x_left);
+
+// Front of the Mac Studio (preview only): two USB-C ports and the SD slot,
+// low on the left of the front face, and the power LED at the bottom right.
+module stadium_y(w, h) hull() for (dx = [-(w - h) / 2, (w - h) / 2]) translate([dx, 0, 0]) rotate([-90, 0, 0]) cylinder(d = h, h = 1, $fn = 20);
+
+module studio_ports(x_left) studio_mirror(x_left) on_edge_frame(studio_dim, x_left) {
+    for (x = [40, 55]) translate([x, -0.4, 30]) stadium_y(8.4, 2.8);
+    translate([80, -0.4, 30]) stadium_y(25, 2.4);
+}
+
+module studio_dummy(x_left) {
+    color("#c9ccd1", 0.95) studio_body(x_left);
+    color("#1d2024") studio_ports(x_left);
 }
 
 // 120 mm fan under the floor (preview only)
@@ -533,7 +551,7 @@ module mini_dummy(kind, x_left) {
 // ---------------------------------------------------------------------
 c_frame = "#2f3337";
 c_floor = "#3b4045";
-c_sep   = "#f28c28";
+c_sep   = "#5a616b";   // separators: a lighter grey than the frame
 
 module assembly() {
     seps = preset_xs(config);

@@ -2,7 +2,7 @@
 // printed here), with the gateway and three short orange patch cables.
 // Same rack coordinates as the other parts: X across (0 = centre),
 // Y rearward from the back face of the rack ears, Z up from the bottom of the U.
-which = "mount";   // [mount, device, cables, keystones]
+which = "mount";   // [mount, device, cables, keystones, screen, ports, jacks]
 $fn = 32;
 
 U = 44.45;
@@ -86,3 +86,15 @@ if (which == "mount") { panel(); cradle(); }
 if (which == "device") device();
 if (which == "cables") cables();
 if (which == "keystones") keystones();
+// front 0.96" status display in a dark pill bezel, centred on the front face
+if (which == "screen") translate([dev_x, 1.4, dev_z + ucg[2] / 2]) rotate([90, 0, 0]) {
+    hull() for (dx = [-11, 11]) translate([dx, 0, 0]) cylinder(d = 11, h = 0.8, $fn = 32);
+}
+if (which == "screen_glow") translate([dev_x - 9, 0.4, dev_z + ucg[2] / 2 - 3]) cube([18, 0.6, 6]);
+// rear ports: 4 x 1G + 1 x 2.5G WAN RJ45, and USB-C power
+if (which == "ports") {
+    for (x = [-22, -6, 10, 26, 42]) translate([dev_x + x - 6, ucg[1] + 1.8, dev_z + 9]) cube([12, 1, 10.5]);
+    translate([dev_x - 48, ucg[1] + 1.8, dev_z + 12]) cube([9, 1, 3.2]);
+}
+// RJ45 openings in the keystone pass-throughs
+if (which == "jacks") for (x = jacks_x) translate([x - 5.75, -panel_t + 0.1, 17.5]) cube([11.5, 0.6, 10]);

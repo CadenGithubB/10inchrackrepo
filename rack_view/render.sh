@@ -3,10 +3,11 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 OPENSCAD=${OPENSCAD:-openscad}
+../tools/install-colors.sh
 mkdir -p images
 # Mac shelf parts for each layout
 for c in m1 m4 m1_m4; do
-  for w in seps studio minis; do
+  for w in seps studio studio_ports minis; do
     "$OPENSCAD" -q -D "which=\"$w\"" -D "config=\"$c\"" -D '$fn=48' --export-format=binstl -o "stl/mac_${w}_$c.stl" mac_parts.scad &
   done
 done
@@ -14,7 +15,7 @@ wait
 r() { # out, camera (tx,ty,tz,rx,ry,rz,dist), extra args...
   local out=$1 cam=$2; shift 2
   echo "PNG  $out"
-  "$OPENSCAD" -q "$@" -o "$out" --imgsize=1600,1200 --camera="$cam" --colorscheme=Tomorrow scene.scad
+  "$OPENSCAD" -q "$@" -o "$out" --imgsize=1600,1200 --camera="$cam" --colorscheme="Rack Grey" scene.scad
 }
 SHELF=0,100,156   # middle of the Mac shelf
 # whole rack

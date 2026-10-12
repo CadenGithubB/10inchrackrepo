@@ -151,11 +151,26 @@ module fan() {
     }
 }
 
+// U6 Pro, from Ubiquiti's photos: a flat back with a short straight band
+// round the edge, and a smooth dome on the front that is 35 mm thick in
+// the middle. The status LED is a ring about 72 mm across on the dome.
+ap_band = 6;           // straight band at the back edge
+led_d = 72;
+function ap_dome_z(r) = ap_band + (ap_h - ap_band) * sqrt(max(0, 1 - pow(r / (ap_d / 2), 2)));
+
+module ap_body() {
+    translate([0, 0, plate_t + air_gap]) rotate_extrude($fn = 128) polygon(concat(
+        [[0, 0], [ap_d / 2 - 1, 0], [ap_d / 2, 1], [ap_d / 2, ap_band]],
+        [for (a = [3 : 3 : 90]) [ap_d / 2 * cos(a), ap_band + (ap_h - ap_band) * sin(a)]],
+        [[0, ap_h]]));
+}
+module ap_led() {
+    translate([0, 0, plate_t + air_gap + ap_dome_z(led_d / 2) - 0.6])
+        rotate_extrude($fn = 128) translate([led_d / 2, 0]) scale([1.6, 0.8]) circle(r = 1.2, $fn = 16);
+}
 module ap() {
-    color("WhiteSmoke") translate([0, 0, plate_t + air_gap]) hull() {
-        cylinder(d = ap_d, h = 1);
-        translate([0, 0, ap_h - 8]) rotate_extrude() translate([ap_d / 2 - 8, 0]) circle(r = 8);
-    }
+    color("WhiteSmoke") ap_body();
+    color("#8fc4ff") ap_led();
 }
 
 if (part == "riser") riser();
@@ -164,7 +179,7 @@ else if (part == "fan") fan();
 else if (part == "ap") ap();
 else {
     color("#2f3337") difference() { union() { ring_plate(); ribs(); } bolt_holes(); }
-    color("#f28c28") tabs();
+    color("#2f3337") tabs();
     color("#30353a", 0.6) translate([-115, -115, -cover_t]) cube([230, 230, cover_t]);
     if (show_devices) { fan(); ap(); }
 }

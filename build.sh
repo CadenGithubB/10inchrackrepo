@@ -4,6 +4,7 @@
 # headless box run it as:  xvfb-run -a ./build.sh
 set -euo pipefail
 cd "$(dirname "$0")"
+"$(git rev-parse --show-toplevel 2>/dev/null || echo .)/tools/install-colors.sh"
 SCAD=mac_rack_shelf.scad
 mkdir -p stl images
 
@@ -23,7 +24,7 @@ img() { # name, camera, extra -D args...
   local name=$1 cam=$2; shift 2
   echo "PNG  $name"
   openscad -q "$@" -o "images/$name.png" --imgsize=1600,1200 --viewall --autocenter \
-    --camera="$cam" --colorscheme=Tomorrow "$SCAD"
+    --camera="$cam" --colorscheme="Rack Grey" "$SCAD"
 }
 
 img assembly_m1     0,0,0,62,0,28,0    -D 'config="m1"'

@@ -63,8 +63,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
     <div>
       <p class="label">Show</p>
       <div class="toggles">
-        <label><input id="g-ped" type="checkbox" checked><span class="swatch" style="background:#f28c28"></span>U6 Pro riser + fan under the cover<span class="u">top</span></label>
-        <label><input id="g-flex" type="checkbox" checked><span class="swatch" style="background:#33475e"></span>Flex Mini + injector mount<span class="u">U11</span></label>
+        <label><input id="g-ped" type="checkbox" checked><span class="swatch" style="background:#2f3337"></span>U6 Pro riser + fan under the cover<span class="u">top</span></label>
+        <label><input id="g-flex" type="checkbox" checked><span class="swatch" style="background:#2f3337"></span>Flex Mini + injector mount<span class="u">U11</span></label>
         <label><input id="g-ucg" type="checkbox" checked><span class="swatch" style="background:#161718"></span>UCG Ultra mount (bought)<span class="u">U12</span></label>
         <label><input id="g-brush" type="checkbox" checked><span class="swatch" style="background:#1a1c1e"></span>0.5U brush panel (bought)<span class="u">U10 top</span></label>
         <label><input id="g-hol" type="checkbox" checked><span class="swatch" style="background:#2f3337"></span>Injector holsters, on the rear rails<span class="u">U9–U11</span></label>
@@ -92,31 +92,40 @@ __DATA__
     ['rack_cover', 0x30353a, 'g-rack', [0, 0, 0], 0.85],
     ['rack_sides', 0x9aa3ad, 'g-sides', [0, 0, 0], 0.16],
     ['mac_frame', 0x2f3337, 'g-mac', MAC],
-    ['mac_seps', 0xf28c28, 'g-mac', MAC],
+    ['mac_seps', 0x5a616b, 'g-mac', MAC],
     ['mac_studio', 0xc9ccd1, 'g-dev', MAC],
     ['mac_minis', 0xb8bcc2, 'g-dev', MAC],
-    ['flex_base', 0x33475e, 'g-flex', FLEX],
-    ['flex_frame', 0xf28c28, 'g-flex', FLEX],
+    ['mac_studio_ports', 0x1d2024, 'g-dev', MAC],
+    ['flex_base', 0x2f3337, 'g-flex', FLEX],
+    ['flex_frame', 0x5a616b, 'g-flex', FLEX],
     ['flex_switch', 0xe8eaec, 'g-dev', FLEX],
     ['flex_inj', 0xd0d4d8, 'g-dev', FLEX],
+    ['flex_ports', 0x1d2024, 'g-dev', FLEX],
+    ['flex_leds', 0x7cd38b, 'g-dev', FLEX],
     ['pdu_body', 0x1f2124, 'g-pdu', PDU],
     ['pdu_front', 0xd23224, 'g-pdu', PDU],
     ['pdu_pigtails', 0x111214, 'g-pdu', PDU],
     ['pdu_sockets', 0x222426, 'g-pdu', PDU],
-    ['brush_panel', 0x1a1c1e, 'g-brush', BRUSH],
-    ['brush_brush', 0x0b0c0d, 'g-brush', BRUSH],
+    ['brush_panel', 0x15171a, 'g-brush', BRUSH],
+    ['brush_brush', 0x4a5058, 'g-brush', BRUSH],
+    ['brush_cables', 0x25292e, 'g-brush', BRUSH],
     ['ucg_mount', 0x161718, 'g-ucg', UCG],
     ['ucg_keystones', 0xe9eaeb, 'g-ucg', UCG],
     ['ucg_cables', 0xf08a2c, 'g-ucg', UCG],
     ['ucg_device', 0xf4f5f6, 'g-dev', UCG],
+    ['ucg_screen', 0x14171a, 'g-dev', UCG],
+    ['ucg_screen_glow', 0x9fd0ff, 'g-dev', UCG],
+    ['ucg_ports', 0x1d2024, 'g-dev', UCG],
+    ['ucg_jacks', 0x1d2024, 'g-ucg', UCG],
     ['hol_holster_r', 0x2f3337, 'g-hol', [0, 0, 0]],
     ['hol_holster_l', 0x2f3337, 'g-hol', [0, 0, 0]],
     ['hol_inj_r', 0xd0d4d8, 'g-dev', [0, 0, 0]],
     ['hol_inj_l', 0xd0d4d8, 'g-dev', [0, 0, 0]],
     ['ped_body', 0x2f3337, 'g-ped', PED],
-    ['ped_tabs', 0xf28c28, 'g-ped', PED],
+    ['ped_tabs', 0x2f3337, 'g-ped', PED],
     ['ped_fan', 0x3a3f45, 'g-ped', PED],
-    ['ped_ap', 0xf2f3f4, 'g-dev', PED]
+    ['ped_ap', 0xf2f3f4, 'g-dev', PED],
+    ['ped_led', 0x8fc4ff, 'g-dev', PED]
   ];
 
   const stage = document.getElementById('stage');
