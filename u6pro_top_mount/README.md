@@ -27,6 +27,10 @@ Hardware:
 4. Bring the PoE cable up the front of the rack and in under the AP from the front, between two ribs. The lanes between ribs are about 50 mm wide at the edge, so the cable lies flat in the 10 mm gap and plugs into the AP's port.
 5. Set the AP on the ribs, between the orange tabs.
 
+## Second set of holes
+
+There's a second set of four bolt holes nearer the middle, on a 71.5 mm square turned 45°. That's the hole spacing of an **80 mm fan**, so if the outer holes don't line up with the cover's vent slots, you can bolt an 80 × 25 mm fan through the inner set instead. Those holes sit inside a 120 mm fan's blade area, so don't use them with the 120 mm fan: a bolt or nut there would hit the blades. With a 120 mm fan, use the outer set and drill the acrylic if the slots don't line up. Set `inner_set = false` to leave the inner holes out.
+
 ## Fit and dimensions
 
 - **U6 Pro:** Ø197 × 35 mm ([Ubiquiti spec](https://techspecs.ui.com/unifi/wifi/u6-pro)). The tabs sit on a 198.6 mm circle, so the AP has 0.8 mm of play all round.

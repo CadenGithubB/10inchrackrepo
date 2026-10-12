@@ -44,6 +44,8 @@ plate_t  = 3;           // height of the web that sits on the cover
 outer_w  = 8;           // outer ring width (under the tabs)
 inner_w  = 4;           // inner ring width (round the open middle)
 pad_d    = 14;          // bolt pads
+inner_set = true;       // add the second set of bolt holes nearer the middle
+inner_pitch = 71.5;     // 80 mm fan hole spacing
 solid_plate = false;    // true = the old solid ring plate
 air_gap  = 10;          // AP rests this far above the ring
 open_d   = 118;         // open middle over the fan
@@ -65,6 +67,11 @@ eps = 0.01;
 pocket_d = ap_d + 2 * ap_clear;
 ring_d   = pocket_d + 2 * rim_t;
 fan_holes = [for (sx = [-1, 1], sy = [-1, 1]) [sx, sy] * fan_hole_pitch / 2];
+// second, inner set: an 80 mm fan's 71.5 mm square, turned 45 degrees so the
+// holes land at different spots on the cover than the outer set
+inner_r = inner_pitch / sqrt(2);
+inner_holes = inner_set ? [for (a = [0 : 90 : 270]) inner_r * [cos(a), sin(a)]] : [];
+all_holes = concat(fan_holes, inner_holes);
 tab_angles = [for (i = [0 : tab_n - 1]) i * 360 / tab_n];
 rib_angles = [for (a = [0 : rib_step : 359]) if (a != cable_gap_a) a];
 
@@ -84,6 +91,11 @@ module ring_plate() {
     else {
         annulus(ring_d, ring_d - 2 * outer_w, plate_t);
         annulus(open_d + 2 * inner_w, open_d, plate_t);
+        // inner pads, each tied out to the inner ring
+        for (p = inner_holes) {
+            translate([p[0], p[1], 0]) cylinder(d = pad_d, h = plate_t);
+            rotate(atan2(p[1], p[0])) translate([inner_r, -rib_w / 2, 0]) cube([open_d / 2 + inner_w / 2 - inner_r, rib_w, plate_t]);
+        }
         for (p = fan_holes) {
             translate([p[0], p[1], 0]) cylinder(d = pad_d, h = plate_t);
             // spoke from the inner ring out through the pad to the outer ring
@@ -113,7 +125,7 @@ module tabs() {
 }
 
 module bolt_holes() {
-    for (p = fan_holes) translate([p[0], p[1], 0]) {
+    for (p = all_holes) translate([p[0], p[1], 0]) {
         translate([0, 0, -1]) cylinder(d = bolt_d, h = plate_t + 2);
         csk = (csk_d - bolt_d) / 2;
         translate([0, 0, plate_t - csk]) cylinder(d1 = bolt_d, d2 = csk_d, h = csk + eps);
