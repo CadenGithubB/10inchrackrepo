@@ -1,8 +1,10 @@
 # U6 Pro low riser
 
-A flat ring that sits on the DeskPi RackMate T2's acrylic top cover and holds the UniFi U6 Pro 10 mm above it. A 120 mm fan goes **under** the cover, inside the rack, and blows up through the cover's vents. The same four M4 bolts go down through the ring, the acrylic and the fan's corner holes, so one set of bolts holds both. Air comes up through the open middle of the ring, hits the back of the AP, and leaves sideways between the ribs and tabs.
+An open ring that sits on the DeskPi RackMate T2's acrylic top cover and holds the UniFi U6 Pro 10 mm above it. A 120 mm fan goes **under** the cover, inside the rack, and blows up through the cover's vents. The same four M4 bolts go down through the ring, the acrylic and the fan's corner holes, so one set of bolts holds both. Air comes up through the open middle of the ring, hits the back of the AP, and leaves sideways between the ribs and tabs.
 
 The top of the AP sits 48 mm above the cover.
+
+The part that touches the cover is an open web, not a solid plate: an outer ring under the tabs, a thin inner ring, the 4 mm ribs and four bolt pads with short spokes. Nearly all of the cover's vents under the ring stay uncovered, so they breathe as well as the open middle. It's meant for ABS (or ASA), which is stiff enough for a web this light. Set `solid_plate = true` to go back to the solid ring.
 
 ![Assembly](images/assembly.png)
 ![Riser](images/riser.png)

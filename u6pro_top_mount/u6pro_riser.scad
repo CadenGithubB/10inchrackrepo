@@ -40,14 +40,18 @@ handle_gap = 239;       // measured inside gap between the rack's two top handle
 
 /* [Riser] */
 ap_clear = 0.8;         // radial play around the AP inside the tabs
-plate_t  = 3;           // ring plate on the cover
+plate_t  = 3;           // height of the web that sits on the cover
+outer_w  = 8;           // outer ring width (under the tabs)
+inner_w  = 4;           // inner ring width (round the open middle)
+pad_d    = 14;          // bolt pads
+solid_plate = false;    // true = the old solid ring plate
 air_gap  = 10;          // AP rests this far above the ring
 open_d   = 118;         // open middle over the fan
 rim_t    = 3.2;         // tab thickness
 tab_n    = 6;
 tab_w    = 14;
 tab_up   = 8;           // how far the tabs reach up the side of the AP
-rib_w    = 3;
+rib_w    = 4;
 rib_step = 30;          // a rib every 30 degrees ...
 cable_gap_a = 90;       // ... except here (rear), where the PoE cable comes in
 
@@ -68,10 +72,24 @@ assert(ring_d < handle_gap, "Riser won't fit between the handles");
 echo(str("Ring ", ring_d, " mm across; AP top ", plate_t + air_gap + ap_h,
          " mm above the cover; bolt length about ", plate_t + cover_t + fan_thick + 4, " mm + nut"));
 
+module annulus(d_out, d_in, h) {
+    difference() { cylinder(d = d_out, h = h); translate([0, 0, -1]) cylinder(d = d_in, h = h + 2); }
+}
+
+// Open web on the cover: an outer ring, an inner ring and the ribs,
+// with pads and short spokes for the 4 bolts. Everything between is
+// open, so the cover's vents under the ring can breathe too.
 module ring_plate() {
-    difference() {
-        cylinder(d = ring_d, h = plate_t);
-        translate([0, 0, -1]) cylinder(d = open_d, h = plate_t + 2);
+    if (solid_plate) annulus(ring_d, open_d, plate_t);
+    else {
+        annulus(ring_d, ring_d - 2 * outer_w, plate_t);
+        annulus(open_d + 2 * inner_w, open_d, plate_t);
+        for (p = fan_holes) {
+            translate([p[0], p[1], 0]) cylinder(d = pad_d, h = plate_t);
+            // spoke from the inner ring out through the pad to the outer ring
+            a = atan2(p[1], p[0]);
+            rotate(a) translate([open_d / 2, -rib_w / 2, 0]) cube([ring_d / 2 - outer_w / 2 - open_d / 2, rib_w, plate_t]);
+        }
     }
 }
 
