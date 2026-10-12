@@ -1,0 +1,140 @@
+// =====================================================================
+//  UniFi U6 Pro low riser for the top of a 10" rack
+//  (DeskPi RackMate T2, on its vented acrylic top cover)
+//
+//  A flat ring the AP rests on, 10 mm above the cover. A 120 mm fan is
+//  bolted UNDER the cover, inside the rack, blowing up through the
+//  cover's vents. The same 4 M4 bolts go down through this ring, the
+//  acrylic and the fan's corner holes, so one set of bolts holds both.
+//  Air comes up through the open middle, hits the back of the AP and
+//  leaves sideways between the ribs and tabs.
+//
+//      side view
+//           ________________
+//          /     U6 Pro     \
+//    <--  |_|==============|_|  -->   10 mm air gap, ribs hold the AP
+//    =====[ring]=====[ring]=====      acrylic top cover
+//             [ 120 fan ]             inside the rack, blowing up
+//
+//  The PoE cable comes in at the back, where one rib is left out.
+//  Coordinates: origin = centre on the top surface of the cover,
+//  X = left/right, Y = front(-)/back(+), Z = up.
+//
+//  Parts: assembly | riser | tabs (preview colour only) | fan | ap
+// =====================================================================
+
+/* [View] */
+part = "assembly";      // [assembly, riser, tabs, fan, ap]
+show_devices = true;
+
+/* [Devices] */
+ap_d   = 197;           // U6 Pro diameter (Ubiquiti spec)
+ap_h   = 35;
+fan_size = 120;
+fan_thick = 25;         // 15 for a slim fan if the space under the cover is tight
+fan_hole_pitch = 105;
+cover_t = 3;            // acrylic top cover thickness (estimate; preview only)
+
+/* [Rack] */
+handle_gap = 239;       // measured inside gap between the rack's two top handles
+
+/* [Riser] */
+ap_clear = 0.8;         // radial play around the AP inside the tabs
+plate_t  = 3;           // ring plate on the cover
+air_gap  = 10;          // AP rests this far above the ring
+open_d   = 118;         // open middle over the fan
+rim_t    = 3.2;         // tab thickness
+tab_n    = 6;
+tab_w    = 14;
+tab_up   = 8;           // how far the tabs reach up the side of the AP
+rib_w    = 3;
+rib_step = 30;          // a rib every 30 degrees ...
+cable_gap_a = 90;       // ... except here (rear), where the PoE cable comes in
+
+/* [Hardware] */
+bolt_d   = 4.5;         // M4 clearance
+csk_d    = 8.6;         // M4 countersunk head
+
+$fn = 96;
+eps = 0.01;
+
+pocket_d = ap_d + 2 * ap_clear;
+ring_d   = pocket_d + 2 * rim_t;
+fan_holes = [for (sx = [-1, 1], sy = [-1, 1]) [sx, sy] * fan_hole_pitch / 2];
+tab_angles = [for (i = [0 : tab_n - 1]) i * 360 / tab_n];
+rib_angles = [for (a = [0 : rib_step : 359]) if (a != cable_gap_a) a];
+
+assert(ring_d < handle_gap, "Riser won't fit between the handles");
+echo(str("Ring ", ring_d, " mm across; AP top ", plate_t + air_gap + ap_h,
+         " mm above the cover; bolt length about ", plate_t + cover_t + fan_thick + 4, " mm + nut"));
+
+module ring_plate() {
+    difference() {
+        cylinder(d = ring_d, h = plate_t);
+        translate([0, 0, -1]) cylinder(d = open_d, h = plate_t + 2);
+    }
+}
+
+module ribs() {
+    for (a = rib_angles) rotate(a)
+        translate([open_d / 2 - 1, -rib_w / 2, 0])
+            cube([pocket_d / 2 - open_d / 2 + 1, rib_w, plate_t + air_gap]);
+}
+
+module tabs() {
+    for (a = tab_angles) rotate(a)
+        intersection() {
+            difference() {
+                cylinder(d = ring_d, h = plate_t + air_gap + tab_up);
+                translate([0, 0, -1]) cylinder(d = pocket_d, h = 100);
+                translate([0, 0, plate_t + air_gap + tab_up - 1.5])
+                    cylinder(d1 = pocket_d, d2 = pocket_d + 3, h = 1.5 + eps);
+            }
+            translate([0, -tab_w / 2, plate_t - eps]) cube([ring_d, tab_w, 100]);
+        }
+}
+
+module bolt_holes() {
+    for (p = fan_holes) translate([p[0], p[1], 0]) {
+        translate([0, 0, -1]) cylinder(d = bolt_d, h = plate_t + 2);
+        csk = (csk_d - bolt_d) / 2;
+        translate([0, 0, plate_t - csk]) cylinder(d1 = bolt_d, d2 = csk_d, h = csk + eps);
+    }
+}
+
+module riser() {
+    difference() {
+        union() { ring_plate(); ribs(); tabs(); }
+        bolt_holes();
+    }
+}
+
+module fan() {
+    // hangs under the cover
+    translate([0, 0, -cover_t - fan_thick]) {
+        color("#3a3f45") difference() {
+            translate([-fan_size / 2, -fan_size / 2, 0]) cube([fan_size, fan_size, fan_thick]);
+            translate([0, 0, -1]) cylinder(d = fan_size - 4, h = fan_thick + 2);
+            for (p = fan_holes) translate([p[0], p[1], -1]) cylinder(d = bolt_d, h = fan_thick + 2);
+        }
+        color("#55606a") cylinder(d = 40, h = fan_thick - 2);
+    }
+}
+
+module ap() {
+    color("WhiteSmoke") translate([0, 0, plate_t + air_gap]) hull() {
+        cylinder(d = ap_d, h = 1);
+        translate([0, 0, ap_h - 8]) rotate_extrude() translate([ap_d / 2 - 8, 0]) circle(r = 8);
+    }
+}
+
+if (part == "riser") riser();
+else if (part == "tabs") difference() { tabs(); bolt_holes(); }
+else if (part == "fan") fan();
+else if (part == "ap") ap();
+else {
+    color("#2f3337") difference() { union() { ring_plate(); ribs(); } bolt_holes(); }
+    color("#f28c28") tabs();
+    color("#30353a", 0.6) translate([-115, -115, -cover_t]) cube([230, 230, cover_t]);
+    if (show_devices) { fan(); ap(); }
+}

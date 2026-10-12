@@ -1,73 +1,45 @@
-# U6 Pro fan pedestal
+# U6 Pro low riser
 
-A round pedestal that sits on top of the DeskPi RackMate T2, on its vented acrylic top cover. A 120 mm fan inside pulls warm air up out of the rack and blows it across the back of the UniFi U6 Pro, which sits on ribs 12 mm above the deck. The air leaves sideways through the gaps between the six tabs that hold the AP in place.
+A flat ring that sits on the DeskPi RackMate T2's acrylic top cover and holds the UniFi U6 Pro 10 mm above it. A 120 mm fan goes **under** the cover, inside the rack, and blows up through the cover's vents. The same four M4 bolts go down through the ring, the acrylic and the fan's corner holes, so one set of bolts holds both. Air comes up through the open middle of the ring, hits the back of the AP, and leaves sideways between the ribs and tabs.
 
-The U-PoE-AT injector stands on its long edge in a pod moulded onto the back of the base. A short patch cable runs from its PoE port in under the AP.
+The top of the AP sits 48 mm above the cover.
 
 ![Assembly](images/assembly.png)
-![Exploded](images/exploded.png)
-![From the back, with the injector pod](images/rear.png)
+![Riser](images/riser.png)
 
 ## Parts
 
 | File | Qty | Size (mm) | Notes |
 |---|---|---|---|
-| [`stl/base.stl`](stl/base.stl) | 1 | 205 × 245 × 50 | Round base plus the injector pod. Prints floor-down with no supports, on a 256 mm bed. |
-| [`stl/deck.stl`](stl/deck.stl) | 1 | Ø205 × 24 | Prints flat with the ribs and tabs up. No supports. |
-| [`stl/fit_check.stl`](stl/fit_check.stl) | 1 | Ø205 × 24 | Optional. The deck's outer ring with the AP tabs, plus the floor with the fan guides and screw holes. Print it first to check the fit. |
+| [`stl/riser.stl`](stl/riser.stl) | 1 | Ø205 × 21 | Prints flat with the ribs and tabs up. No supports. |
 
-**Hardware**
-- **Deck:** 4 × M3×10 screws and 4 × M3 nuts.
-- **Fan:** 4 × M4×35 countersunk screws and 4 × M4 nuts (use M4×25 for a 15 mm slim fan).
-- **Fan:** a 120 mm × 25 mm fan with the standard 105 mm hole spacing. A 5 V USB fan, such as a 5 V Noctua 120 mm, can run off any USB port. Its lead leaves through a small notch at the back of the base.
-- **Patch cable:** a short one, about 15–25 cm, from the injector's PoE port to the AP.
-- **Feet (optional):** stick-on rubber feet. The spare anti-slip pads from the rack kit work, and there are 21 mm recesses for them under the base.
+Hardware:
+- 4 × M4 countersunk bolts, about 40 mm long, and 4 × M4 nuts. Use a nylon-insert nut under the fan so vibration doesn't loosen it.
+- A 120 × 25 mm fan with the standard 105 mm hole spacing, such as a 5 V USB Noctua. Use a 120 × 15 mm slim fan if the space under the cover turns out to be tight. Set `fan_thick = 15` and use about 30 mm bolts.
 
-## How it goes together
+## Fitting it
 
-1. Slide an M3 nut into the side slot of each of the four posts in the base. The slots open towards the middle.
-2. Set the fan in the base between the corner guides, **airflow arrow pointing up** (the label side faces down). Bolt it down with the M4 screws from underneath. The heads sit flush, so the base stays flat.
-3. Run the fan lead out through the notch at the rear left.
-4. Screw the deck down.
-5. Drop the injector into the pod on its long edge, with the RJ45 ports facing right and the power socket facing left. Lips at each end stop it sliding when you plug cables in, and the windows above them leave the sockets clear. Plug in the LAN cable and the power cord.
-6. Run the patch cable from the PoE port forward and in under the AP through the gap between the right and rear-right tabs. It lies in the 12 mm gap and plugs into the AP's port.
-7. Set the AP on the ribs, between the tabs.
-
-![Deck](images/deck.png)
-![Base from above](images/base_top.png)
+1. Find the middle of the top cover. Mark four holes on a 105 mm square there and drill them 4.5 mm. You can skip drilling if the cover's vent slots happen to line up. Drill acrylic slowly, with a sharp bit and something flat underneath, or it can crack.
+2. Hold the fan under the cover, **airflow arrow pointing up**, and the riser on top with its open middle over the fan.
+3. Put the bolts down through the riser, the cover and the fan, and tighten the nuts underneath. The heads sit flush in the ring, under the AP.
+4. Run the PoE cable in at the back. One rib is left out there, so the cable lies flat under the AP and plugs into its port.
+5. Set the AP on the ribs, between the orange tabs.
 
 ## Fit and dimensions
 
-- **U6 Pro:** Ø197 × 35 mm ([Ubiquiti spec](https://techspecs.ui.com/unifi/wifi/u6-pro)). The tabs sit on a 198.6 mm circle, so there's 0.8 mm of play all round. They reach 8 mm up the side of the AP.
-- **Air path:**
-  - Intake: a 116 mm opening in the floor.
-  - Deck: a 116 mm finger grille over the fan.
-  - Exit: about 6,500 mm² round the AP, close to the fan's own open area.
-- **Size:** the pedestal is 205 mm across and 32 mm tall, and the top of the AP ends up 83 mm above the rack top. With the pod it's 245 mm deep, which leaves 15 mm of the rack's 260 mm. Set it about 20 mm forward of centre so the pod doesn't overhang the back. The pod's walls are 50 mm tall, and the injector stands 65 mm above the rack top.
-- **Injector:** U-PoE-AT, 93 × 62 × 35 mm ([datasheet](https://dl.ui.com/ds/u-poe-at_ds.pdf)). It has 0.6 mm of play each side, and the UACC-PoE+-2.5G is the same size.
-- **Handles:** the measured gap between the rack's two top handles is 239 mm (`handle_gap`). That leaves 17 mm of space on each side of the pedestal.
-- **Not confirmed:** where the U6 Pro's Ethernet port sits on its back. The cable path assumes it's near the middle, where the ceiling mount puts it. The 12 mm gap leaves room for the cable but is tight for a plug with a bulky boot.
-- **Not locked:** the AP sits between the tabs under its own weight (580 g). It isn't locked in.
+- **U6 Pro:** Ø197 × 35 mm ([Ubiquiti spec](https://techspecs.ui.com/unifi/wifi/u6-pro)). The tabs sit on a 198.6 mm circle, so the AP has 0.8 mm of play all round.
+- **Riser:** 205 mm across. That leaves 17 mm each side between the rack's top handles, which measure 239 mm apart.
+- **Air gap under the AP:** 10 mm (`air_gap`). The open middle is 118 mm across, matching the fan.
+- **Space under the cover (unconfirmed):** assumed to be enough for the fan, about 28 mm for a 25 mm fan. The rack's spec image shows a 33 mm band above the rails, but this hasn't been measured on the real rack.
+- **Not confirmed:** where the U6 Pro's Ethernet port sits on its back. The 10 mm gap fits the cable, but a plug with a bulky boot may be tight.
+- **Injector:** goes in the rack for now. It isn't part of this design.
 
 ## Printing
 
-Same material advice as the shelf: ABS or ASA (PETG is fine too). Use 0.2 mm layers, 3–4 walls and 15–20% infill. Each part is 205 mm across, so any bed of 210 mm or more works.
+Same material advice as the shelf: ABS or ASA (PETG works too). Use 0.2 mm layers, 3–4 walls and 15–20% infill. The design is two colours to match the rack: a dark ring with orange tabs. On a single-colour printer, print it all dark, or swap filament at the height where the ribs end (13 mm) so the tab tops come out orange.
 
 ## Editing
 
-Everything is in [`u6pro_top_mount.scad`](u6pro_top_mount.scad). These are the settings you're most likely to change:
+Everything is in [`u6pro_riser.scad`](u6pro_riser.scad). The most useful settings are `air_gap`, `fan_thick`, `tab_n`/`tab_w`/`tab_up`, `ap_clear` and `cable_gap_a`, which sets where the rib is left out for the cable. Run `./build.sh` to rebuild the STL and images.
 
-| Setting | What it does |
-|---|---|
-| `air_gap` | Space under the AP |
-| `tab_n`, `tab_w`, `tab_up` | Number, width and height of the AP tabs |
-| `fan_thick` | Fan thickness: 25 mm, or 15 mm for a slim fan |
-| `intake_d` | Size of the floor opening under the fan |
-| `grille_d`, `grille_pitch` | Size and ring spacing of the fan grille |
-| `ap_clear` | Play around the AP |
-
-Run `./build.sh` to rebuild the STLs and images.
-
-## 3D viewer
-
-[`viewer.html`](viewer.html) is a self-contained 3D viewer you can open in a browser, with explode, cut-away and airflow views. It embeds the base and deck STLs. After changing the model, rebuild it from `viewer_template.html`: replace `__BASE__` and `__DECK__` with the base64 of a binary STL of each part.
+The earlier designs, the round fan pedestal and the injector pod, are in the git history.
