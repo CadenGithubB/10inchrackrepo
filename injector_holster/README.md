@@ -18,7 +18,7 @@ The left and right versions are mirror images. The left holster goes on the left
 
 Both print standing on the shelf end, as they are in the STL, with no supports. Only the short lip across the top front bridges.
 
-Hardware: 2 rack screws per holster, put in from behind through the ear. The slots are 5.2 mm wide, which fits 10-32 or M5, and the rack kit's 10-32 screws should work. For M6, set `screw_d = 6.6`. The slots are 6 mm long vertically, so the ear can line up with any pair of holes 1U apart.
+Hardware: 2 rack screws per holster, put in from behind through the ear. The slots match the front rack ears: 6.6 × 10 mm, running sideways, so they fit M6, M5 and 10-32 screws. The rack kit's 10-32 screws should work.
 
 ## Fit (check on the real rack)
 

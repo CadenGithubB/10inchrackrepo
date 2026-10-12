@@ -43,8 +43,8 @@ rail_depth = 20;       // front-to-back thickness of the rear rail / post
 rail_inner = 10.25;    // rail hole centre to the rail's inner (rack-centre) edge
 rail_outer = 9.25;     // how far the ear reaches outwards past the hole
 rail_clear = 0.5;      // play round the rail
-screw_d = 5.2;         // 10-32 / M5 clearance (M6: 6.6)
-slot_len = 6;          // vertical slots, so the ear lines up with any hole pair
+screw_d = 6.6;         // same as the front rack ears: fits M6, M5 and 10-32
+slot_len = 3.4;        // horizontal slots, 10 mm wide overall, like the front rack ears
 hole_gap_u = 1;        // screws this many U apart (same hole in each U, so any pair works)
 
 /* [Holster] */
@@ -122,7 +122,7 @@ module holster_right() {
         }
         // screw slots through the ear
         for (k = [0, 1]) translate([0, plate_t + 1, hole_z0 + k * hole_gap_u * U]) rotate([90, 0, 0])
-            hull() for (dz = [-slot_len / 2, slot_len / 2]) translate([0, dz, 0]) cylinder(d = screw_d, h = plate_t + 2);
+            hull() for (dx = [-slot_len / 2, slot_len / 2]) translate([dx, 0, 0]) cylinder(d = screw_d, h = plate_t + 2);
     }
 }
 
