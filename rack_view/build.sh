@@ -10,6 +10,7 @@ for w in frame seps fan studio minis; do "$OPENSCAD" -q -D "which=\"$w\"" -D 'co
 for w in base frame switch inj; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/flex_$w.stl" flex_parts.scad & done
 for w in body tabs fan ap; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/ped_$w.stl" ped_parts.scad & done
 for w in mount device cables keystones; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/ucg_$w.stl" ucg_parts.scad & done
+for w in holster_r holster_l inj_r inj_l; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/hol_$w.stl" holster_parts.scad & done
 for w in rack cover sides; do "$OPENSCAD" -q -D "which=\"$w\"" --export-format=binstl -o "stl/rack_$w.stl" rack.scad & done
 wait
 python3 - <<'PY'
