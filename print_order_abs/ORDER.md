@@ -1,12 +1,13 @@
-# ABS print order: U6 Pro riser + injector holsters
+# ABS print order: U6 Pro riser, injector holsters and UCG Ultra mount
 
-Upload the three STLs and order them together in the same ABS colour so they match. Units are millimetres, at 100% scale. Each part is already in print orientation and needs no supports.
+Upload the STLs and order them together in the same ABS colour so they match. Units are millimetres, at 100% scale. Each part is already in print orientation and needs no supports.
 
 | File | Qty | Size (mm) | Orientation |
 |---|---|---|---|
 | 01-AP-riser-PRINT-1.stl | 1 | 205 × 205 × 21 | Flat, ribs and tabs up |
 | 02-injector-holster-LEFT-PRINT-1.stl | 1 | 89 × 67 × 98 | Standing on its shelf end |
 | 03-injector-holster-RIGHT-PRINT-1.stl | 1 | 89 × 67 × 98 | Standing on its shelf end |
+| 04-ucg-ultra-mount-PRINT-1.stl | 1 | 254 × 44 × 141 | Front-down (faceplate on the bed) |
 
 The left and right holsters are mirror images, so order one of each. They're L-shaped: the ear bolts to the back face of a rear rail and the injector sits inside the rack. The left one goes on the left rail as seen from the front.
 
@@ -20,4 +21,5 @@ Every STL is a closed mesh: each edge belongs to exactly two triangles.
 
 - **AP riser:** 4 × M4 countersunk bolts about 40 mm long, and 4 × M4 nuts (nylon-insert).
 - **AP riser fan:** one 120 × 25 mm fan with the standard 105 mm hole spacing. A 5 V USB fan is the easy option.
+- **UCG Ultra mount:** 3 snap-in keystone jacks, and rack screws.
 - **Holsters:** 2 rack screws each (M6, M5 or 10-32; the rack kit's 10-32 screws work). The slots are 6.6 × 10 mm, like the front rack ears.

@@ -1,5 +1,5 @@
-// Visual stand-in for the Blazin3D UCG-Ultra 1U rack mount (bought, not
-// printed here), with the gateway and three short orange patch cables.
+// The printed UCG Ultra mount (ucg_ultra_mount/) in rack position, plus the
+// gateway, keystone jacks and three short orange patch cables for the picture.
 // Same rack coordinates as the other parts: X across (0 = centre),
 // Y rearward from the back face of the rack ears, Z up from the bottom of the U.
 which = "mount";   // [mount, device, cables, keystones, screen, ports, jacks]
@@ -8,9 +8,9 @@ $fn = 32;
 U = 44.45;
 ucg = [141.8, 127.6, 30];          // UCG-Ultra W x D x H (Ubiquiti spec)
 panel_t = 4;
-dev_x = -30;                        // device centre across the panel
-dev_z = 7;                          // device bottom above the bottom of the U
-jacks_x = [62, 82, 102];            // keystone pass-throughs, right of the window
+dev_x = 26.6 + 141.8 / 2 - 127;     // device centre across the panel (matches the mount)
+dev_z = 4;                          // device bottom above the bottom of the U
+jacks_x = [182 - 127, 200 - 127, 218 - 127];  // keystones, matching the mount
 cradle_d = 135;                     // how far the side rails reach back
 rail_t = 4;
 rail_h = 34;
@@ -48,7 +48,7 @@ module cradle() {
 
 module device() {
     r = 10;
-    translate([dev_x, ucg[1] / 2 + 2, dev_z]) hull()
+    translate([dev_x, ucg[1] / 2 + 0.8, dev_z]) hull()
         for (sx = [-1, 1], sy = [-1, 1])
             translate([sx * (ucg[0] / 2 - r), sy * (ucg[1] / 2 - r), 0]) {
                 translate([0, 0, 3]) cylinder(r = r, h = ucg[2] - 6);
@@ -79,10 +79,12 @@ module cables() {
 }
 
 module keystones() {
-    for (x = jacks_x) translate([x - 7, -panel_t + 0.4, 15.5]) cube([14, 20, 15]);
+    for (x = jacks_x) translate([x - 7, -panel_t + 0.4, 22 - 7.5]) cube([14, 20, 15]);
 }
 
-if (which == "mount") { panel(); cradle(); }
+// the STL is in print orientation (front down); turn it back upright
+if (which == "mount") translate([-127, -4, 0]) rotate([-90, 0, 0]) translate([0, -44, 0]) import("../ucg_ultra_mount/01-ucg-ultra-mount-PRINT-1.stl", convexity = 10);
+if (which == "mount_old") { panel(); cradle(); }
 if (which == "device") device();
 if (which == "cables") cables();
 if (which == "keystones") keystones();
@@ -93,8 +95,8 @@ if (which == "screen") translate([dev_x, 1.4, dev_z + ucg[2] / 2]) rotate([90, 0
 if (which == "screen_glow") translate([dev_x - 9, 0.4, dev_z + ucg[2] / 2 - 3]) cube([18, 0.6, 6]);
 // rear ports: 4 x 1G + 1 x 2.5G WAN RJ45, and USB-C power
 if (which == "ports") {
-    for (x = [-22, -6, 10, 26, 42]) translate([dev_x + x - 6, ucg[1] + 1.8, dev_z + 9]) cube([12, 1, 10.5]);
-    translate([dev_x - 48, ucg[1] + 1.8, dev_z + 12]) cube([9, 1, 3.2]);
+    for (x = [-22, -6, 10, 26, 42]) translate([dev_x + x - 6, ucg[1] + 0.6, dev_z + 9]) cube([12, 1, 10.5]);
+    translate([dev_x - 48, ucg[1] + 0.6, dev_z + 12]) cube([9, 1, 3.2]);
 }
 // RJ45 openings in the keystone pass-throughs
-if (which == "jacks") for (x = jacks_x) translate([x - 5.75, -panel_t + 0.1, 17.5]) cube([11.5, 0.6, 10]);
+if (which == "jacks") for (x = jacks_x) translate([x - 5.75, -panel_t + 0.1, 22 - 5]) cube([11.5, 0.6, 10]);

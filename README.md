@@ -18,7 +18,7 @@ Both builds use the same separators.
 | Folder | What it is |
 |---|---|
 | [`flex_mini_mount/`](flex_mini_mount/) | The 1U mount for the UniFi Flex Mini 2.5G switch and its U-PoE-AT injector side by side, with a slotted retaining frame (V4). Print files and OpenSCAD sources |
-| UCG Ultra gateway mount | Bought, not printed: the Blazin3D 1U mount. The rack view draws a look-alike from [`rack_view/ucg_parts.scad`](rack_view/ucg_parts.scad) |
+| [`ucg_ultra_mount/`](ucg_ultra_mount/) | A printable 1U mount for the UCG Ultra gateway in the same style as the Flex Mini mount, with three keystone ports. It replaces the bought Blazin3D mount |
 | [`u6pro_top_mount/`](u6pro_top_mount/) | A low open riser that holds a UniFi U6 Pro on the rack's top cover, with a 120 mm fan bolted under the cover |
 | [`injector_holster/`](injector_holster/) | L-shaped holsters (left and right) that hold a U-PoE-AT injector inside the rack, with an ear on the back of a rear rail |
 | [`print_order_abs/`](print_order_abs/) | Print-ready STLs and an order sheet for the riser and both holsters in ABS (also zipped as `print_order_abs.zip`) |
