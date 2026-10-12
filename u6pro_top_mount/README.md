@@ -42,3 +42,7 @@ Same material advice as the shelf: ABS or ASA (PETG is fine too). Use 0.2 mm lay
 ## Editing
 
 Everything is in [`u6pro_top_mount.scad`](u6pro_top_mount.scad). The useful knobs are `ap_clear`, `inj_clear`, `rim_h`, `center_hole_d`, `notch_w` and `inj` (for a different injector). Run `./build.sh` to rebuild the STLs and images.
+
+## 3D viewer
+
+[`viewer.html`](viewer.html) is a self-contained 3D viewer (open it in a browser) with explode and cut-away views. It embeds the base and deck STLs. After changing the model, rebuild it from `viewer_template.html` by swapping `__BASE__` and `__DECK__` for the base64 of binary STLs of each part.
