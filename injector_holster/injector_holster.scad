@@ -1,32 +1,31 @@
 // =====================================================================
-//  Vertical PoE injector holster for the rear rails of a 10" rack
-//  (DeskPi RackMate T2). Holds a U-PoE-AT standing on end, ports up,
-//  power socket down (or the reverse), hanging just outside the back
-//  of the rack.
+//  L-shaped PoE injector holster for the rear rails of a 10" rack
+//  (DeskPi RackMate T2). Holds a U-PoE-AT standing on end inside the
+//  rack, just in front of a rear rail, either end up.
 //
-//  A flat plate bolts to the back (outside) face of a rear rail
-//  with two rack screws, 1U apart. A sleeve on the plate holds the
-//  injector with its broad face against the plate:
-//    * side walls and front lips (like the Flex Mini mount's hoods)
-//      stop it falling forward or sideways,
-//    * a bottom shelf with a window for the C6 power plug carries it,
-//    * the top is open for the RJ45 plugs.
-//  Slide the injector in from the top, either end down: the shelf
-//  window is wide enough for the power plug or the two RJ45 plugs. Left and right are mirror
-//  images, so both sides of the rack can match.
+//  The holster wraps round the rail like an L:
+//    * an EAR on the back (outside) face of the rail takes two rack
+//      screws, 1U apart,
+//    * a side wall runs forward past the rail's inner edge,
+//    * the SLEEVE sits inside the rack, in front of the rail, holding the
+//      injector with its broad face towards the back of the rack.
+//  Side walls and front lips (like the Flex Mini mount's hoods) stop the
+//  injector falling forward or sideways; a shelf on 5 mm ledges carries
+//  it. The shelf window is wide enough for the power plug or both RJ45
+//  plugs, so it can go in either end down.
 //
-//      the right-hand holster, seen from the sleeve side
-//                 ports up
-//              |  [====]  |  ||   <- rear rail
-//              |  [    ]  |==o|      rack screw
-//              |  [inj ]  |  ||
-//              |  [    ]  |==o|      rack screw, 1U lower
-//              |__[====]__|  ||
-//                 power down
+//      top view, right-hand rail (rack front is down the page)
 //
-//  Coordinates: X = across the rack (+ towards the right rail),
-//  Y = away from the rail, out the back of the rack (0 = rail's rear face), Z = up
-//  (0 = bottom of the holster).
+//                          ear  ==o==   <- screw from behind
+//                          |   [rail]
+//               ___________|   [    ]
+//              |  sleeve   |   [____]
+//              |  [ inj ]  |
+//              |_lip___lip_|
+//
+//  Coordinates (right-hand holster): origin at the rail hole centre on
+//  the rail's back face. X = across the rack (+ outwards, towards the
+//  side panel), Y = towards the back of the rack, Z = up.
 //  Parts: assembly | right | left
 // =====================================================================
 
@@ -38,97 +37,111 @@ show_device = true;
 inj = [62, 35, 93];  // U-PoE-AT on end: width (X), thickness (Y), length (Z)
 clear = 0.6;
 
-/* [Rail] */
+/* [Rail - VERIFY ON THE REAL RACK] */
 U = 44.45;
-hole_inset = 9.25;     // rail hole centre in from the plate's outer edge
+rail_depth = 20;       // front-to-back thickness of the rear rail / post
+rail_inner = 10.25;    // rail hole centre to the rail's inner (rack-centre) edge
+rail_outer = 9.25;     // how far the ear reaches outwards past the hole
+rail_clear = 0.5;      // play round the rail
 screw_d = 5.2;         // 10-32 / M5 clearance (M6: 6.6)
-slot_len = 6;          // vertical slots, so the plate lines up with any hole pair
+slot_len = 6;          // vertical slots, so the ear lines up with any hole pair
 hole_gap_u = 1;        // screws this many U apart (same hole in each U, so any pair works)
 
 /* [Holster] */
-plate_t = 4;
+plate_t = 4;           // ear thickness and the sleeve's back wall
 wall = 3;
+side_t = 5;            // the side wall that wraps round the rail (carries the load)
 lip = 6;               // front lips overlap the injector face this much
 lip_t = 2.5;
 shelf_t = 4;
 top_lip_h = 8;         // short lips at the top too, so it can't tip out
 corner_r = 7;          // vertical corners of the cavity, following the injector's rounded edges
-bottom_ch = 4;         // 45-degree chamfer where the shelf meets the walls, cups the rounded bottom edges
+bottom_ch = 4;         // 45-degree chamfer where the shelf meets the walls
 win_r = 5;             // rounded corners on the shelf window
 ledge = 5;             // shelf ledge the injector rests on, each side
-power_win = [inj[0] + 2 * clear - 2 * ledge, inj[1] + 2 * clear - 6];  // shelf window: wide enough for either end, so it can go in ports-down too
+power_win = [inj[0] + 2 * clear - 2 * ledge, inj[1] + 2 * clear - 6];
 
 $fn = 48;
 
 cav = [inj[0] + 2 * clear, inj[1] + 2 * clear, inj[2] + clear];
-// plate: covers the sleeve plus a strip over the rail with the screw slots
-strip_w = 2 * hole_inset;
-plate_w = wall + cav[0] + wall + strip_w;
 plate_h = shelf_t + cav[2];
+sleeve_w = wall + cav[0] + wall;
+sleeve_d = plate_t + cav[1] + lip_t;
 hole_z0 = plate_h / 2 - hole_gap_u * U / 2;   // the two screws, centred
-echo(str("Holster ", plate_w, " W x ", plate_t + cav[1] + lip_t, " D x ", plate_h,
-         " H mm; screws ", hole_gap_u * U, " mm apart"));
+x_in = -(rail_inner + rail_clear);            // inner face of the wrap-round wall
+y_front = -(rail_depth + rail_clear);         // just in front of the rail
+echo(str("Holster ", sleeve_w + side_t + rail_inner + rail_outer, " W x ",
+         sleeve_d - y_front + plate_t, " D x ", plate_h, " H mm; screws ", hole_gap_u * U, " mm apart"));
 
 module rrect(w, d, r, h) {
     hull() for (x = [r, w - r], y = [r, d - r]) translate([x, y, 0]) cylinder(r = r, h = h);
 }
 
-module slot(x, z) {
-    translate([x, plate_t + 1, z]) rotate([90, 0, 0])
-        hull() for (dz = [-slot_len / 2, slot_len / 2]) translate([0, dz, 0]) cylinder(d = screw_d, h = plate_t + 2);
-}
-
-// right-hand holster: rail strip on the +X side
-module holster_right() {
-    x_cav = wall;                          // cavity starts after the left wall
-    x_strip = wall + cav[0] + wall;        // rail strip
+// The sleeve, built with its back wall on y = 0 and opening towards +y,
+// x = 0 .. sleeve_w. Placed later, mirrored so it opens towards the rack front.
+module sleeve() {
     difference() {
         union() {
-            // back plate against the rail face
-            cube([plate_w, plate_t, plate_h]);
-            // side walls
-            for (x = [0, wall + cav[0]])
-                translate([x, 0, 0]) cube([wall, plate_t + cav[1] + lip_t, plate_h]);
-            // fill the sleeve; the rounded cavity is cut back out, leaving corner fillets
-            translate([wall, plate_t, 0]) cube([cav[0], cav[1], plate_h]);
-            // bottom shelf
-            cube([wall + cav[0] + wall, plate_t + cav[1] + lip_t, shelf_t]);
-            // full-height front lips down both sides
-            for (x = [wall, wall + cav[0] - lip])
+            cube([sleeve_w, plate_t, plate_h]);                                   // back wall
+            for (x = [0, wall + cav[0]]) translate([x, 0, 0]) cube([wall, sleeve_d, plate_h]);  // side walls
+            translate([wall, plate_t, 0]) cube([cav[0], cav[1], plate_h]);       // fill, cavity cut back out
+            cube([sleeve_w, sleeve_d, shelf_t]);                                  // shelf
+            for (x = [wall, wall + cav[0] - lip])                                 // side lips
                 translate([x, plate_t + cav[1], 0]) cube([lip, lip_t, plate_h]);
-            // short lips across the bottom and top of the front face
-            translate([wall, plate_t + cav[1], 0]) cube([cav[0], lip_t, shelf_t + 10]);
-            translate([wall, plate_t + cav[1], plate_h - top_lip_h]) cube([cav[0], lip_t, top_lip_h]);
-            // gusset tying the rail strip to the sleeve
-            translate([x_strip - 0.01, 0, 0]) cube([strip_w, plate_t + 3, plate_h]);
+            translate([wall, plate_t + cav[1], 0]) cube([cav[0], lip_t, shelf_t + 10]);              // bottom lip
+            translate([wall, plate_t + cav[1], plate_h - top_lip_h]) cube([cav[0], lip_t, top_lip_h]); // top lip
         }
-        // injector cavity: rounded vertical corners, chamfered into the shelf
-        translate([x_cav, plate_t, 0]) hull() {
+        // cavity: rounded vertical corners, chamfered into the shelf
+        translate([wall, plate_t, 0]) hull() {
             translate([0, 0, shelf_t + bottom_ch]) rrect(cav[0], cav[1], corner_r, cav[2] + 1);
             translate([bottom_ch, bottom_ch, shelf_t]) rrect(cav[0] - 2 * bottom_ch, cav[1] - 2 * bottom_ch, max(corner_r - bottom_ch, 1), 0.01);
         }
-        // shelf window with rounded corners, wide enough for the plugs at either end
-        translate([x_cav + (cav[0] - power_win[0]) / 2, plate_t + (cav[1] - power_win[1]) / 2, -1])
+        // shelf window
+        translate([wall + (cav[0] - power_win[0]) / 2, plate_t + (cav[1] - power_win[1]) / 2, -1])
             rrect(power_win[0], power_win[1], win_r, shelf_t + 2);
-        // screw slots in the rail strip
-        for (k = [0, 1]) slot(x_strip + strip_w / 2, hole_z0 + k * hole_gap_u * U);
-        // vents in the back plate behind the injector
+        // vents in the back wall
         for (z = [shelf_t + 12 : 14 : plate_h - 16])
-            translate([x_cav + 10, -1, z]) cube([cav[0] - 20, plate_t + 2, 6]);
+            translate([wall + 10, -1, z]) cube([cav[0] - 20, plate_t + 2, 6]);
+    }
+}
+
+module place_sleeve() {
+    // sleeve's outer side wall flush with the wrap-round wall, back wall
+    // just in front of the rail, opening towards the rack front
+    translate([x_in - sleeve_w, y_front, 0]) mirror([0, 1, 0]) children();
+}
+
+module holster_right() {
+    difference() {
+        union() {
+            place_sleeve() sleeve();
+            // wrap-round wall along the rail's inner edge
+            translate([x_in - side_t, y_front - plate_t, 0]) cube([side_t, -y_front + 2 * plate_t, plate_h]);
+            // ear on the back face of the rail
+            translate([x_in - side_t, 0, 0]) cube([side_t - x_in + rail_outer, plate_t, plate_h]);
+        }
+        // screw slots through the ear
+        for (k = [0, 1]) translate([0, plate_t + 1, hole_z0 + k * hole_gap_u * U]) rotate([90, 0, 0])
+            hull() for (dz = [-slot_len / 2, slot_len / 2]) translate([0, dz, 0]) cylinder(d = screw_d, h = plate_t + 2);
     }
 }
 
 module holster(side = "right") {
     if (side == "right") holster_right();
-    else translate([plate_w, 0, 0]) mirror([1, 0, 0]) holster_right();
+    else mirror([1, 0, 0]) holster_right();
 }
 
 module injector(side = "right") {
-    x = side == "right" ? wall + clear : strip_w + wall + clear;
-    color("Gainsboro") translate([x, plate_t + clear, shelf_t]) cube(inj);
-    // RJ45 ports on the top end
-    color("#2b3036") for (dx = [inj[0] / 2 - 12, inj[0] / 2 + 12])
-        translate([x + dx - 7, plate_t + clear + inj[1] / 2 - 6, shelf_t + inj[2] - 0.5]) cube([14, 12, 1]);
+    module inj_right() place_sleeve() {
+        color("Gainsboro") translate([wall + clear, plate_t + clear, shelf_t]) cube(inj);
+        color("#2b3036") for (dx = [inj[0] / 2 - 12, inj[0] / 2 + 12])
+            translate([wall + clear + dx - 7, plate_t + clear + inj[1] / 2 - 6, shelf_t + inj[2] - 0.5]) cube([14, 12, 1]);
+    }
+    if (side == "right") inj_right(); else mirror([1, 0, 0]) inj_right();
+}
+
+module rail_stub() {   // preview only
+    color("#1b1e21", 0.6) translate([-rail_inner, -rail_depth, -10]) cube([rail_inner + rail_outer + 2, rail_depth, plate_h + 20]);
 }
 
 // print orientation: standing on the shelf as shown, no supports
@@ -137,9 +150,11 @@ if (part == "right") holster("right");
 else if (part == "left") holster("left");
 else {
     color("#2f3337") holster("right");
+    rail_stub();
     if (show_device) injector("right");
-    translate([-plate_w - 40, 0, 0]) {
+    translate([-220, 0, 0]) {
         color("#2f3337") holster("left");
+        mirror([1, 0, 0]) rail_stub();
         if (show_device) injector("left");
     }
 }

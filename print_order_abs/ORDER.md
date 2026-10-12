@@ -5,10 +5,12 @@ Upload the three STLs and order them together in the same ABS colour so they mat
 | File | Qty | Size (mm) | Orientation |
 |---|---|---|---|
 | 01-AP-riser-PRINT-1.stl | 1 | 205 × 205 × 21 | Flat, ribs and tabs up |
-| 02-injector-holster-LEFT-PRINT-1.stl | 1 | 88 × 43 × 98 | Standing on its shelf end |
-| 03-injector-holster-RIGHT-PRINT-1.stl | 1 | 88 × 43 × 98 | Standing on its shelf end |
+| 02-injector-holster-LEFT-PRINT-1.stl | 1 | 94 × 67 × 98 | Standing on its shelf end |
+| 03-injector-holster-RIGHT-PRINT-1.stl | 1 | 94 × 67 × 98 | Standing on its shelf end |
 
-The left and right holsters are mirror images, so order one of each. They bolt to the back face of the rear rails, with the left one on the left rail as seen from the front of the rack.
+The left and right holsters are mirror images, so order one of each. They're L-shaped: the ear bolts to the back face of a rear rail and the injector sits inside the rack. The left one goes on the left rail as seen from the front.
+
+**Before ordering the holsters:** they wrap round the rear rail, so they're sized for a rail about 20 mm deep with its inner edge about 10 mm from the hole centre. Measure the real rail first, and if it's different, change `rail_depth` and `rail_inner` in `injector_holster.scad` and re-export the holsters.
 
 Suggested settings: ABS, 0.2 mm layers, 3–4 walls, 15–20% infill.
 
