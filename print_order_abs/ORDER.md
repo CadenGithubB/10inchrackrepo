@@ -5,8 +5,8 @@ Upload the three STLs and order them together in the same ABS colour so they mat
 | File | Qty | Size (mm) | Orientation |
 |---|---|---|---|
 | 01-AP-riser-PRINT-1.stl | 1 | 205 × 205 × 21 | Flat, ribs and tabs up |
-| 02-injector-holster-LEFT-PRINT-1.stl | 1 | 94 × 67 × 98 | Standing on its shelf end |
-| 03-injector-holster-RIGHT-PRINT-1.stl | 1 | 94 × 67 × 98 | Standing on its shelf end |
+| 02-injector-holster-LEFT-PRINT-1.stl | 1 | 89 × 67 × 98 | Standing on its shelf end |
+| 03-injector-holster-RIGHT-PRINT-1.stl | 1 | 89 × 67 × 98 | Standing on its shelf end |
 
 The left and right holsters are mirror images, so order one of each. They're L-shaped: the ear bolts to the back face of a rear rail and the injector sits inside the rack. The left one goes on the left rail as seen from the front.
 
