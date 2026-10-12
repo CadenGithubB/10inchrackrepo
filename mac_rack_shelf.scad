@@ -117,7 +117,7 @@ dev_play_y     = 2.5;        // front-to-back play between the doorstops (leaves
 // Optional 120 mm fan screwed under the floor, blowing up through the vents.
 // M4 countersunk bolts go down through the floor and the fan's corner holes,
 // with nuts underneath; the heads sit flush with the floor.
-fan_mount      = true;
+fan_mount      = false;  // off: the U below holds the PDU instead
 fan_size       = 120;
 fan_thick      = 25;     // preview only; a 25 mm fan fits in the 1U below the cradle
 fan_hole_pitch = 105;    // standard 120 mm fan screw spacing
