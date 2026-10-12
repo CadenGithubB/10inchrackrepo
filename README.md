@@ -17,10 +17,12 @@ Both builds use the same separators.
 
 | Folder | What it is |
 |---|---|
+| [`flex_mini_mount/`](flex_mini_mount/) | The 1U mount for the UniFi Flex Mini 2.5G switch and its U-PoE-AT injector side by side, with a slotted retaining frame (V4). Print files and OpenSCAD sources |
+| UCG Ultra gateway mount | Bought, not printed: the Blazin3D 1U mount. The rack view draws a look-alike from [`rack_view/ucg_parts.scad`](rack_view/ucg_parts.scad) |
 | [`u6pro_top_mount/`](u6pro_top_mount/) | A low open riser that holds a UniFi U6 Pro on the rack's top cover, with a 120 mm fan bolted under the cover |
 | [`injector_holster/`](injector_holster/) | L-shaped holsters (left and right) that hold a U-PoE-AT injector inside the rack, with an ear on the back of a rear rail |
 | [`print_order_abs/`](print_order_abs/) | Print-ready STLs and an order sheet for the riser and both holsters in ABS (also zipped as `print_order_abs.zip`) |
-| [`rack_view/`](rack_view/) | A 3D viewer of the whole rack: PDU, this shelf, brush panel, Flex Mini mount, UCG Ultra mount, holsters and the AP. Open `rack_view/viewer.html` in a browser. The Flex Mini parts are read from `~/Documents/ChatGPT/10 in rack/v4-slot-retainer` when rebuilding |
+| [`rack_view/`](rack_view/) | A 3D viewer of the whole rack: PDU, this shelf, brush panel, Flex Mini mount, UCG Ultra mount, holsters and the AP. Open `rack_view/viewer.html` in a browser |
 
 ![The whole rack: PDU, Mac shelf, brush panel, Flex Mini mount, UCG Ultra mount, injector holsters and the U6 Pro on top](rack_view/images/rack_front34.png)
 

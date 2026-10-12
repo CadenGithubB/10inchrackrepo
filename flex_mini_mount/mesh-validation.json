@@ -1,0 +1,67 @@
+{
+  "revision": "V4 keyed frame with flush underside screws",
+  "generator": "OpenSCAD 2026.10.08 / Manifold",
+  "checks": {
+    "01-main-mount-PRINT-1.stl": {
+      "triangles": 3466,
+      "bounds_mm": [
+        254.0,
+        44.0,
+        116.0
+      ],
+      "minimum_mm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "volume_mm3": 156810.199,
+      "connected_components": 1,
+      "nonmanifold_edges": 0,
+      "inconsistent_edges": 0,
+      "degenerate_triangles": 0,
+      "sha256": "96633c04fa99150f463a58687daefb1725002e827f43cc6c21ebfa7a8a6e8760"
+    },
+    "02-retaining-frame-PRINT-1.stl": {
+      "triangles": 932,
+      "bounds_mm": [
+        154.55,
+        42.4,
+        22.9
+      ],
+      "minimum_mm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "volume_mm3": 18122.084,
+      "connected_components": 1,
+      "nonmanifold_edges": 0,
+      "inconsistent_edges": 0,
+      "degenerate_triangles": 0,
+      "sha256": "4dae930822688e1b82a07f1e7b6994208ce51de5ed729791cc20b602ec1eb9f7"
+    }
+  },
+  "retaining_plane_triangle_counts": {
+    "switch_left_stop_Y95.4": 8,
+    "switch_right_stop_Y95.4": 8,
+    "injector_stop_Y98.4": 14,
+    "switch_left_roof_Z25.8": 2,
+    "switch_right_roof_Z25.8": 2,
+    "injector_roof_Z39.6": 2
+  },
+  "collision_checks": {
+    "device_collision-0.log": "Current top level object is empty.",
+    "base_collision-5.log": "Current top level object is empty.",
+    "base_collision-0.log": "Current top level object is empty.",
+    "base_collision-1.log": "Current top level object is empty.",
+    "base_collision-11.log": "Current top level object is empty.",
+    "base-device-collision.log": "Current top level object is empty.",
+    "hardware_collision-0.log": "Current top level object is empty."
+  },
+  "source_sha256": {
+    "retainer-frame-v4.scad": "1b86e518c01036747e8dfb8ea73f6ddacaa5ffe7f78f9973567cf9b9971afc1c",
+    "rack-mount-v4.scad": "6c5a3c335f3566176d25abaafd0027fb3c909c7e99291d534dbcb6f094d6ca27",
+    "assembly-check.scad": "c050fc737bbe1a4bb75219c26fc8f61a5f18f969f707e1fc1fc5521d91b40ee6"
+  },
+  "scope": "Digital geometry only; no physical print, fit, connector-clearance, strength, or load tests."
+}
