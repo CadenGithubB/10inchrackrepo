@@ -31,7 +31,7 @@ Hardware: 4 × M3×10 screws and 4 × M3 nuts. Stick-on rubber feet are optional
 - **U6 Pro:** Ø197 × 35 mm ([Ubiquiti spec](https://techspecs.ui.com/unifi/wifi/u6-pro)). The cradle is 198.6 mm across, so there's 0.8 mm of play all round. The rim is 7 mm tall.
 - **U-PoE-AT:** 93 × 62 × 35 mm ([datasheet](https://dl.ui.com/ds/u-poe-at_ds.pdf)). The bay has 0.6 mm of play on each side and above. The UACC-PoE+-2.5G has the same published size.
 - The pedestal is 205 mm across and 38 mm tall. The top of the AP ends up 78 mm above the rack top, which clears the 33 mm handles.
-- **Check before printing:** the gap between the rack's two top handles must be at least 205 mm. I couldn't find a drawing of the RackMate T2's top, so this is not confirmed.
+- **Handles:** the measured gap between the rack's two top handles is 239 mm (`handle_gap`), which leaves 17 mm of space on each side of the pedestal.
 - **Not confirmed:** where the U6 Pro's Ethernet port sits on its back. The 50 mm centre hole assumes the port is in the middle, like the ceiling mount. If it's off-centre, change `center_hole_d` or move the hole.
 - The AP sits in the cradle under its own weight (580 g). It isn't locked in. If you want it locked, measure the hole spacing on the steel mount plate that came with the AP and add bosses for it to the deck.
 

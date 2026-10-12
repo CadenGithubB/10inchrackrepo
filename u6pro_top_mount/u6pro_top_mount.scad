@@ -39,6 +39,9 @@ ap_h   = 35;           // U6 Pro height
 inj    = [62, 93, 35]; // U-PoE-AT: width (X), length (Y, ports end to power end), height
 inj_corner_r = 6;      // estimated plan-view corner radius, preview only
 
+/* [Rack] */
+handle_gap = 239;      // measured inside gap between the rack's two top handles
+
 /* [Fit] */
 ap_clear  = 0.8;       // radial play around the AP in the cradle
 inj_clear = 0.6;       // play around the injector on each side and above it
@@ -90,6 +93,8 @@ bay_l    = inj[1] + 2 * inj_clear;
 bay_y0   = inj_y - bay_l / 2;
 bay_y1   = inj_y + bay_l / 2;
 
+assert(puck_d < handle_gap, str("Pedestal (", puck_d, " mm) won't fit between the handles (", handle_gap, " mm)"));
+echo(str("Clearance to each handle ", (handle_gap - puck_d) / 2, " mm"));
 echo(str("Puck diameter ", puck_d, " mm, base height ", base_h,
          " mm, AP top at ", base_h + deck_t + ap_h, " mm above the rack top"));
 

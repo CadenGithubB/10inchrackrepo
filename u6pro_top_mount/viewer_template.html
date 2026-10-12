@@ -94,11 +94,12 @@ dd { margin: 0; font-family: var(--font-data); font-size: 12px; text-align: righ
         <dt>Injector bay</dt><dd>63.2 × 94.2 mm</dd>
         <dt>AP top above rack</dt><dd>78 mm</dd>
         <dt>Cable notches</dt><dd>30 × 14 mm</dd>
+        <dt>Handle gap</dt><dd>239 mm (17 mm spare each side)</dd>
         <dt>Hardware</dt><dd>4 × M3×10 + nut</dd>
       </dl>
     </div>
 
-    <p class="note">The base and deck are the printed STLs. The AP, injector and rack top are simplified stand-ins; the handle spacing on the rack is a guess until it's measured.</p>
+    <p class="note">The base and deck are the printed STLs. The AP, injector and rack top are simplified stand-ins. The handles are drawn 239 mm apart, as measured.</p>
   </aside>
 </div>
 
@@ -112,6 +113,7 @@ dd { margin: 0; font-family: var(--font-data); font-size: 12px; text-align: righ
   // model constants (mm), from u6pro_top_mount.scad
   const BASE_H = 38, DECK_T = 5, FLOOR_T = 2.4, AP_D = 197, AP_H = 35;
   const INJ = [62, 93, 35], INJ_Y = -2;
+  const HANDLE_GAP = 239; // measured inside gap between the rack's top handles
 
   const stage = document.getElementById('stage');
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -194,7 +196,7 @@ dd { margin: 0; font-family: var(--font-data); font-size: 12px; text-align: righ
     const h = new THREE.Group();
     const bar = new THREE.Mesh(new THREE.BoxGeometry(14, 120, 8), mat(0x1a1e22)); bar.position.z = 29; h.add(bar);
     [-52, 52].forEach(function (y) { const leg = new THREE.Mesh(new THREE.BoxGeometry(14, 14, 33), mat(0x1a1e22)); leg.position.set(0, y, 16.5); h.add(leg); });
-    h.position.set(s * 122, 40, 0); rack.add(h);
+    h.position.set(s * (HANDLE_GAP / 2 + 7), 40, 0); rack.add(h);
   });
 
   function layout(explode) {
