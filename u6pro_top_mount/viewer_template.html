@@ -219,7 +219,7 @@ dd { margin: 0; font-family: var(--font-data); font-size: 12px; text-align: righ
     const h = new THREE.Group();
     const bar = new THREE.Mesh(new THREE.BoxGeometry(14, 120, 8), mat(0x1a1e22)); bar.position.z = 29; h.add(bar);
     [-52, 52].forEach(function (y) { const leg = new THREE.Mesh(new THREE.BoxGeometry(14, 14, 33), mat(0x1a1e22)); leg.position.set(0, y, 16.5); h.add(leg); });
-    h.position.set(s * (HANDLE_GAP / 2 + 7), 40, 0); rack.add(h);
+    h.position.set(s * (HANDLE_GAP / 2 + 7), 0, 0); rack.add(h);
   });
 
   function layout(explode) {
