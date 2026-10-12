@@ -11,18 +11,19 @@
   --muted: #5d6973;
   --line: #d3d8dd;
   --accent: #d9761e;
-  --stage: #e3e7eb;
+  --stage: #b9bec4;
+  --stage-hi: #e7e4df;
   --font-ui: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
   --font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #15191d; --panel: #1c2126; --fg: #e4e8ec; --muted: #94a0aa; --line: #2e353c; --accent: #f28c28; --stage: #101418; color-scheme: dark } }
+  --bg: #15191d; --panel: #1c2126; --fg: #e4e8ec; --muted: #94a0aa; --line: #2e353c; --accent: #f28c28; --stage: #0f1215; --stage-hi: #2b2a28; color-scheme: dark } }
 :root[data-theme="dark"] {
-  --bg: #15191d; --panel: #1c2126; --fg: #e4e8ec; --muted: #94a0aa; --line: #2e353c; --accent: #f28c28; --stage: #101418; color-scheme: dark }
+  --bg: #15191d; --panel: #1c2126; --fg: #e4e8ec; --muted: #94a0aa; --line: #2e353c; --accent: #f28c28; --stage: #0f1215; --stage-hi: #2b2a28; color-scheme: dark }
 html, body { height: 100%; }
 body { background: var(--bg); color: var(--fg); font-family: var(--font-ui); font-size: 14px; }
 .app { display: grid; grid-template-columns: minmax(0, 1fr) 300px; height: 100%; }
-.stage { position: relative; background: var(--stage); min-height: 320px; overflow: hidden; }
+.stage { position: relative; background: radial-gradient(120% 90% at 40% 30%, var(--stage-hi), var(--stage) 70%); min-height: 320px; overflow: hidden; }
 .stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 .hint { position: absolute; left: 16px; bottom: 12px; font-size: 12px; color: var(--muted); pointer-events: none; }
 .views { position: absolute; top: 12px; left: 16px; display: flex; gap: 6px; flex-wrap: wrap; }
@@ -180,14 +181,30 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
   const stage = document.getElementById('stage');
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.95;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   stage.prepend(renderer.domElement);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(32, 1, 1, 10000);
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x8890a0, 0.75));
-  const key = new THREE.DirectionalLight(0xffffff, 0.7); key.position.set(600, 900, -700); scene.add(key);
-  const fill = new THREE.DirectionalLight(0xffffff, 0.35); fill.position.set(-600, 300, 600); scene.add(fill);
+  // Lighting like a room rather than a lightbox: a warm key light from
+  // high front-left that casts soft shadows, a cool fill from the right,
+  // a rim light behind, and warm-sky / dark-floor ambient.
+  scene.add(new THREE.HemisphereLight(0xfff4e6, 0x2a2622, 0.55));
+  const key = new THREE.DirectionalLight(0xffe2c2, 1.35);
+  key.position.set(-700, 1100, 900);
+  key.castShadow = true;
+  key.shadow.mapSize.set(2048, 2048);
+  key.shadow.bias = -0.0004;
+  key.shadow.radius = 4;
+  Object.assign(key.shadow.camera, { left: -450, right: 450, top: 450, bottom: -450, near: 200, far: 3500 });
+  key.target.position.set(0, 280, -130); scene.add(key); scene.add(key.target);
+  const fill = new THREE.DirectionalLight(0xc8dcff, 0.45); fill.position.set(800, 350, 500); scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.6); rim.position.set(200, 700, -1100); scene.add(rim);
 
   // model is Z-up with +Y towards the rear; turn it so the rack front faces the camera
   const world = new THREE.Group(); world.rotation.x = -Math.PI / 2; scene.add(world);
@@ -199,13 +216,30 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
     for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i);
     const g = loader.parse(u.buffer); g.computeVertexNormals();
     const opacity = p[4] || 1;
-    const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({
-      color: p[1], roughness: 0.6, metalness: 0.05, side: THREE.DoubleSide,
-      transparent: opacity < 1, opacity: opacity, depthWrite: opacity >= 0.5 }));
+    const n = p[0];
+    // surface feel by kind of part: anodised rack, matte prints, glossy plastics, glowing LEDs
+    const metal = /^rack_rack|^pdu_body/.test(n);
+    const print = /^(mac_frame|mac_seps|flex_base|flex_frame|ped_body|ped_tabs|hol_holster|brush_panel)/.test(n);
+    const glow = /led|glow/.test(n);
+    const mat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(p[1]).convertSRGBToLinear(),
+      roughness: metal ? 0.42 : print ? 0.82 : 0.38,
+      metalness: metal ? 0.55 : print ? 0.0 : 0.05,
+      emissive: glow ? new THREE.Color(p[1]).convertSRGBToLinear() : 0x000000,
+      emissiveIntensity: glow ? 1.4 : 0,
+      side: THREE.DoubleSide,
+      transparent: opacity < 1, opacity: opacity, depthWrite: opacity >= 0.5 });
+    const m = new THREE.Mesh(g, mat);
+    m.castShadow = opacity >= 0.5 && !glow;
+    m.receiveShadow = opacity >= 0.5;
     m.position.set(p[3][0], p[3][1], p[3][2]);
     world.add(m);
     (groups[p[2]] = groups[p[2]] || []).push(m);
   });
+  // floor that only shows the shadow, so the rack sits in the scene
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(4000, 4000), new THREE.ShadowMaterial({ opacity: 0.28 }));
+  floor.position.z = -30.5; floor.receiveShadow = true; world.add(floor);
+
   Object.keys(groups).forEach(function (id) {
     const el = document.getElementById(id);
     el.addEventListener('change', function () { groups[id].forEach(function (m) { m.visible = el.checked; }); });
