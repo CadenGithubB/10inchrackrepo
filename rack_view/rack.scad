@@ -15,7 +15,7 @@ if (which == "all" || which == "rack") color("#1b1e21") {
   // handles, centred along each side
   for (s = [-1, 1]) translate([s * (239 / 2 + 7) - 7, depth / 2 - 60, top_z]) {
     translate([0, 0, 25]) cube([14, 120, 8]);
-    for (y = [0, 106]) cube([14, 14, 33]);
+    for (y = [0, 106]) translate([0, y, 0]) cube([14, 14, 33]);
   }
 }
 if (which == "all" || which == "cover") color("#30353a", 0.85) translate([-rail_x + 2, 12, top_z - 3]) cube([2 * rail_x - 4, depth - 24, 3]);
