@@ -1,4 +1,8 @@
-# 10" rack cradle: Mac Studio + 2× Mac mini
+# 10-inch rack
+
+Printed parts and a 3D layout for a 12U DeskPi RackMate T2. The main part is a Mac Studio and Mac mini cradle, described below. The other parts are listed after it.
+
+## Mac Studio + 2× Mac mini cradle
 
 A 5U, 3D-printable cradle for a 10-inch rack. It holds one Mac Studio standing on its side and two Mac minis standing on edge beside it. The minis sit between movable separators, so the same frame works with M1 minis now and M4 minis later.
 
@@ -9,7 +13,7 @@ There are two ways to build it:
 
 Both builds use the same separators.
 
-**Also in this repo:** the rest of the 12U DeskPi RackMate T2 build.
+**Also in this repo:** the rest of the RackMate T2 build.
 
 | Folder | What it is |
 |---|---|
