@@ -51,6 +51,9 @@ lip = 6;               // front lips overlap the injector face this much
 lip_t = 2.5;
 shelf_t = 4;
 top_lip_h = 8;         // short lips at the top too, so it can't tip out
+corner_r = 7;          // vertical corners of the cavity, following the injector's rounded edges
+bottom_ch = 4;         // 45-degree chamfer where the shelf meets the walls, cups the rounded bottom edges
+win_r = 5;             // rounded corners on the shelf window
 ledge = 5;             // shelf ledge the injector rests on, each side
 power_win = [inj[0] + 2 * clear - 2 * ledge, inj[1] + 2 * clear - 6];  // shelf window: wide enough for either end, so it can go in ports-down too
 
@@ -64,6 +67,10 @@ plate_h = shelf_t + cav[2];
 hole_z0 = plate_h / 2 - hole_gap_u * U / 2;   // the two screws, centred
 echo(str("Holster ", plate_w, " W x ", plate_t + cav[1] + lip_t, " D x ", plate_h,
          " H mm; screws ", hole_gap_u * U, " mm apart"));
+
+module rrect(w, d, r, h) {
+    hull() for (x = [r, w - r], y = [r, d - r]) translate([x, y, 0]) cylinder(r = r, h = h);
+}
 
 module slot(x, z) {
     translate([x, plate_t + 1, z]) rotate([90, 0, 0])
@@ -81,6 +88,8 @@ module holster_right() {
             // side walls
             for (x = [0, wall + cav[0]])
                 translate([x, 0, 0]) cube([wall, plate_t + cav[1] + lip_t, plate_h]);
+            // fill the sleeve; the rounded cavity is cut back out, leaving corner fillets
+            translate([wall, plate_t, 0]) cube([cav[0], cav[1], plate_h]);
             // bottom shelf
             cube([wall + cav[0] + wall, plate_t + cav[1] + lip_t, shelf_t]);
             // full-height front lips down both sides
@@ -92,11 +101,14 @@ module holster_right() {
             // gusset tying the rail strip to the sleeve
             translate([x_strip - 0.01, 0, 0]) cube([strip_w, plate_t + 3, plate_h]);
         }
-        // injector cavity
-        translate([x_cav, plate_t, shelf_t]) cube([cav[0], cav[1], cav[2] + 1]);
-        // power plug window in the shelf, under the C6 socket
+        // injector cavity: rounded vertical corners, chamfered into the shelf
+        translate([x_cav, plate_t, 0]) hull() {
+            translate([0, 0, shelf_t + bottom_ch]) rrect(cav[0], cav[1], corner_r, cav[2] + 1);
+            translate([bottom_ch, bottom_ch, shelf_t]) rrect(cav[0] - 2 * bottom_ch, cav[1] - 2 * bottom_ch, max(corner_r - bottom_ch, 1), 0.01);
+        }
+        // shelf window with rounded corners, wide enough for the plugs at either end
         translate([x_cav + (cav[0] - power_win[0]) / 2, plate_t + (cav[1] - power_win[1]) / 2, -1])
-            cube([power_win[0], power_win[1], shelf_t + 2]);
+            rrect(power_win[0], power_win[1], win_r, shelf_t + 2);
         // screw slots in the rail strip
         for (k = [0, 1]) slot(x_strip + strip_w / 2, hole_z0 + k * hole_gap_u * U);
         // vents in the back plate behind the injector
