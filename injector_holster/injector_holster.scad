@@ -10,7 +10,8 @@
 //      stop it falling forward or sideways,
 //    * a bottom shelf with a window for the C6 power plug carries it,
 //    * the top is open for the RJ45 plugs.
-//  Slide the injector in from the top. Left and right are mirror
+//  Slide the injector in from the top, either end down: the shelf
+//  window is wide enough for the power plug or the two RJ45 plugs. Left and right are mirror
 //  images, so both sides of the rack can match.
 //
 //      view from the front of the rack (right-hand holster)
@@ -50,7 +51,8 @@ lip = 6;               // front lips overlap the injector face this much
 lip_t = 2.5;
 shelf_t = 4;
 top_lip_h = 8;         // short lips at the top too, so it can't tip out
-power_win = [34, 14];  // window in the shelf for the C6 plug (width, depth)
+ledge = 5;             // shelf ledge the injector rests on, each side
+power_win = [inj[0] + 2 * clear - 2 * ledge, inj[1] + 2 * clear - 6];  // shelf window: wide enough for either end, so it can go in ports-down too
 
 $fn = 48;
 

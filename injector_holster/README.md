@@ -1,6 +1,6 @@
 # Injector holster for the rear rails
 
-Holds a U-PoE-AT PoE injector standing on end just in front of a rear rail, with its ports up and its power socket down. A flat plate bolts to the inside face of the rail with two rack screws, 1U apart. The injector slides in from the top. Side walls and front lips keep it from falling forward or sideways, and a shelf with a window for the power plug carries it. The left and right versions are mirror images, so the two sides of the rack can match.
+Holds a U-PoE-AT PoE injector standing on end just in front of a rear rail, either way up: ports up with the power socket down, or the reverse. A flat plate bolts to the inside face of the rail with two rack screws, 1U apart. The injector slides in from the top. Side walls and front lips keep it from falling forward or sideways, and a shelf carries it on 5 mm ledges. The window in the shelf is almost full width, about 53 × 30 mm, so the power plug or both RJ45 plugs can pass through it. The left and right versions are mirror images, so the two sides of the rack can match.
 
 ![Holsters with injectors](images/front.png)
 ![Empty holsters](images/empty.png)

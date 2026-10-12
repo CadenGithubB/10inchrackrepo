@@ -4,7 +4,7 @@ use <../injector_holster/injector_holster.scad>
 which = "holster_r";
 rail_y = 235;
 rail_x = 118.25;
-z0 = 12 * 44.45 - 97.6 - 2;
+z0 = 11 * 44.45 - 97.6 - 2;   // one U down from the top, leaving room above for cables
 // local strip centre: right holster 78.45, left 9.25 (see injector_holster.scad)
 module place(side) {
     dx = side == "right" ? rail_x - 78.45 : -rail_x - 9.25;
