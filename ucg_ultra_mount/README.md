@@ -20,9 +20,16 @@ Hardware: 3 standard snap-in keystone jacks (or blanks), and the usual rack scre
 - **Top front corners:** two hoods, 8 mm wide, cover them with 0.6 mm of play, the same as on the Flex Mini mount.
 - **Sides:** guides with 0.6 mm of play.
 - **Back:** low stops at the two back corners keep the gateway from sliding back. They leave its rear ports clear.
+- **Underneath:** it rests on four corner feet (see below).
 - **Strap (optional):** there are zip-tie slots either side, near the back, for a tie over the top.
 
-To fit it, tip the gateway's front under the hoods, push it against the bezel, then lower the back onto the tray.
+To fit it, tip the gateway's front under the hoods, push it against the bezel, then lower the back onto the feet.
+
+## Airflow and the optional fan
+
+The gateway sits on four 14 × 14 mm corner feet, 4 mm above the tray, so air can pass underneath it. There are vent slots in the floor, and windows in both side walls under the gateway so air can get out sideways. The back is open between the corner stops.
+
+There's room for a fan under the tray, in the gap above the Flex Mini switch. The floor has a 76 mm opening and four countersunk holes on a 71.5 mm square, which fits an **80 mm fan**. Use a slim one, 80 × 15 mm or thinner. I checked a 15 mm fan against the Flex Mini mount below, and it clears the switch, its hoods and the retaining frame. The fan is set a little left of the gateway's centre to clear the frame. Mount it blowing up, with M4 countersunk screws from the top (the heads sit flush under the gateway) and nuts underneath. A 5 V USB fan is the easy option.
 
 ## Fit
 

@@ -21,5 +21,5 @@ Every STL is a closed mesh: each edge belongs to exactly two triangles.
 
 - **AP riser:** 4 × M4 countersunk bolts about 40 mm long, and 4 × M4 nuts (nylon-insert).
 - **AP riser fan:** one 120 × 25 mm fan with the standard 105 mm hole spacing. A 5 V USB fan is the easy option.
-- **UCG Ultra mount:** 3 snap-in keystone jacks, and rack screws.
+- **UCG Ultra mount:** 3 snap-in keystone jacks and rack screws. For the optional 80 × 15 mm fan under it, you also need 4 × M4 countersunk screws and nuts.
 - **Holsters:** 2 rack screws each (M6, M5 or 10-32; the rack kit's 10-32 screws work). The slots are 6.6 × 10 mm, like the front rack ears.

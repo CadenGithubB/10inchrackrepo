@@ -9,7 +9,7 @@ U = 44.45;
 ucg = [141.8, 127.6, 30];          // UCG-Ultra W x D x H (Ubiquiti spec)
 panel_t = 4;
 dev_x = 26.6 + 141.8 / 2 - 127;     // device centre across the panel (matches the mount)
-dev_z = 4;                          // device bottom above the bottom of the U
+dev_z = 8;                          // device bottom: on the mount's 4 mm feet
 jacks_x = [182 - 127, 200 - 127, 218 - 127];  // keystones, matching the mount
 cradle_d = 135;                     // how far the side rails reach back
 rail_t = 4;
@@ -99,4 +99,9 @@ if (which == "ports") {
     translate([dev_x - 48, ucg[1] + 0.6, dev_z + 12]) cube([9, 1, 3.2]);
 }
 // RJ45 openings in the keystone pass-throughs
+// optional 80 x 15 mm fan hung under the tray (fan_center in the mount)
+if (which == "fan") translate([91.5 - 127, 60 - 4, 0]) {
+    translate([-40, -40, -15]) difference() { cube([80, 80, 15]); translate([40, 40, -1]) cylinder(d = 76, h = 17); }
+    translate([0, 0, -14]) cylinder(d = 30, h = 13);
+}
 if (which == "jacks") for (x = jacks_x) translate([x - 5.75, -panel_t + 0.1, 22 - 5]) cube([11.5, 0.6, 10]);

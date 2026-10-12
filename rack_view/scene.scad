@@ -31,7 +31,8 @@ if (focus == "all") {
     at(11 * U) { part("ucg_mount", "#2f3337"); part("ucg_keystones", "#e9eaeb");
                  part("ucg_cables", "#f08a2c"); part("ucg_device", "#f4f5f6");
                  part("ucg_screen", "#14171a"); part("ucg_screen_glow", "#9fd0ff");
-                 part("ucg_ports", "#1d2024"); part("ucg_jacks", "#1d2024"); }
+                 part("ucg_ports", "#1d2024"); part("ucg_jacks", "#1d2024");
+                 part("ucg_fan", "#3a3f45"); }
     part("hol_holster_r", "#2f3337"); part("hol_holster_l", "#2f3337");
     part("hol_inj_r", "#d0d4d8"); part("hol_inj_l", "#d0d4d8");
     translate([0, DEPTH / 2, TOP_Z]) {

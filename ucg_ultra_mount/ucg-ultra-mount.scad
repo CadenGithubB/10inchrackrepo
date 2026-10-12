@@ -37,7 +37,9 @@ rack_slot_height = 7;
 
 /* [Gateway] */
 ucg_size = [141.8, 127.6, 30];      // UCG-Ultra W x D x H (Ubiquiti spec)
-ucg_position = [26.6, 4.8, 4];      // front-left-bottom corner
+foot_h = 4;                         // the gateway sits on corner feet this high,
+                                    // leaving an air gap under it
+ucg_position = [26.6, 4.8, 4 + foot_h];  // front-left-bottom corner
 // front-edge rounding seen through the bezel (estimated from photos)
 window_corner_radii = [12, 11];
 front_stop_overlap = 4;             // bezel overlaps the face this much at the sides
@@ -58,7 +60,7 @@ hood_case_overlap = 8;
 hood_rear = 17;
 gusset_front_height = 36;
 gusset_rear = 55;
-rear_stop = [10, 6, 10];            // back-corner stops: W x D x H above the floor
+rear_stop = [10, 6, 14];            // back-corner stops: W x D x H above the floor
 fit_coupon_depth = 20;
 
 /* [Keystones] */
@@ -68,6 +70,17 @@ keystone_cut = [14.9, 19.4];        // standard keystone panel cut-out
 keystone_panel = 2;                 // face thickness the clips need
 keystone_relief = [19, 26];         // thinned area behind each cut-out
 keystone_bay_depth = 34;            // clear space kept behind the keystones
+
+/* [Feet, side vents and fan] */
+foot = [14, 14];                    // corner feet, X x Y
+side_vent = [22, 7];                // windows in the side walls under the gateway: length x height
+side_vent_y = [30, 62, 94];         // window starts along the depth
+fan_size = 80;                      // optional fan hung under the tray (80 mm; 15 mm slim fits)
+fan_hole_pitch = 71.5;              // 80 mm fan hole spacing
+fan_center = [91.5, 60];            // nudged left so a 15 mm fan clears the Flex Mini retaining frame below
+fan_opening_d = 76;
+fan_bolt_d = 4.5;
+fan_csk_d = 8.6;
 
 /* [Ventilation and straps] */
 vent_width = 5;
@@ -167,15 +180,35 @@ module base_blank() {
         // divider up the keystone side, full height at the front for stiffness
         translate([divider_left, tray_front, 0]) cube([wall_thickness, keystone_bay_depth, panel_height - 6]);
         front_capture();
+        // corner feet the gateway sits on
+        for (x = [ucg_position[0], ucg_right - foot[0]], y = [ucg_position[1], ucg_rear - foot[1]])
+            translate([x, y, 0]) cube([foot[0], foot[1], floor_thickness + foot_h]);
         // low stops behind the gateway's two back corners
         for (x = [ucg_position[0], ucg_right - rear_stop[0]])
             translate([x, ucg_rear + guide_clearance, 0]) cube([rear_stop[0], rear_stop[1], floor_thickness + rear_stop[2]]);
     }
 }
 
+fan_holes = [for (sx = [-1, 1], sy = [-1, 1]) fan_center + [sx, sy] * fan_hole_pitch / 2];
+
 module vents() {
+    // floor slots, kept off the feet and the fan's screw corners
     for (x = [ucg_position[0] + 8 : vent_pitch : ucg_right - 8 - vent_width], y = vent_y_centers)
-        translate([x, y - vent_length / 2, -epsilon]) cube([vent_width, vent_length, floor_thickness + 2 * epsilon]);
+        if (norm([x + vent_width / 2, y] - fan_center) > fan_opening_d / 2 + 3 &&
+            min([for (h = fan_holes) norm([x + vent_width / 2, y] - h)]) > 10 &&
+            (x > ucg_position[0] + foot[0] + 1 && x + vent_width < ucg_right - foot[0] - 1 ||
+             (y - vent_length / 2 > ucg_position[1] + foot[1] + 1 && y + vent_length / 2 < ucg_rear - foot[1] - 1)))
+            translate([x, y - vent_length / 2, -epsilon]) cube([vent_width, vent_length, floor_thickness + 2 * epsilon]);
+    // round opening over the fan
+    translate([fan_center[0], fan_center[1], -epsilon]) cylinder(d = fan_opening_d, h = floor_thickness + 2 * epsilon, $fn = 96);
+    // fan screws, countersunk from the top so the heads sit flush under the gateway
+    for (h = fan_holes) translate([h[0], h[1], 0]) {
+        translate([0, 0, -epsilon]) cylinder(d = fan_bolt_d, h = floor_thickness + 2 * epsilon);
+        translate([0, 0, floor_thickness - (fan_csk_d - fan_bolt_d) / 2]) cylinder(d1 = fan_bolt_d, d2 = fan_csk_d, h = (fan_csk_d - fan_bolt_d) / 2 + epsilon);
+    }
+    // windows in the side walls, under the gateway, so air can get out sideways
+    for (y = side_vent_y, x = [tray_left - epsilon, guide_right - epsilon])
+        translate([x, y, floor_thickness + 0.5]) cube([wall_thickness + 2 * epsilon, side_vent[0], side_vent[1]]);
 }
 
 module zip_slots() {
