@@ -1,6 +1,6 @@
 # Injector holster for the rear rails
 
-Holds a U-PoE-AT PoE injector standing on end just in front of a rear rail, either way up: ports up with the power socket down, or the reverse. A flat plate bolts to the inside face of the rail with two rack screws, 1U apart. The injector slides in from the top. Side walls and front lips keep it from falling forward or sideways, and a shelf carries it on 5 mm ledges. The inside corners are rounded (7 mm) to follow the injector's rounded edges, and a 4 mm chamfer where the shelf meets the walls cups its rounded bottom edges, so it sits snug with no square corners to knock against. The window in the shelf is almost full width, about 53 × 30 mm, so the power plug or both RJ45 plugs can pass through it. The left and right versions are mirror images, so the two sides of the rack can match.
+Holds a U-PoE-AT PoE injector standing on end just outside the back of the rack, on a rear rail, either way up: ports up with the power socket down, or the reverse. A flat plate bolts to the back (outside) face of the rail with two rack screws, 1U apart, so nothing takes up space inside the rack. The injector slides in from the top. Side walls and front lips keep it from falling forward or sideways, and a shelf carries it on 5 mm ledges. The inside corners are rounded (7 mm) to follow the injector's rounded edges, and a 4 mm chamfer where the shelf meets the walls cups its rounded bottom edges, so it sits snug with no square corners to knock against. The window in the shelf is almost full width, about 53 × 30 mm, so the power plug or both RJ45 plugs can pass through it. The left and right versions are mirror images, so the two sides of the rack can match.
 
 ![Holsters with injectors](images/front.png)
 ![Empty holsters](images/empty.png)
@@ -19,8 +19,8 @@ Hardware: 2 rack screws per holster. The slots are 5.2 mm wide, which fits 10-32
 ## Fit
 
 - **Injector:** 62 × 35 × 93 mm with 0.6 mm of play ([datasheet](https://dl.ui.com/ds/u-poe-at_ds.pdf)). The UACC-PoE+-2.5G is the same size.
-- **Footprint:** each holster sticks 43 mm forward from the rail face and reaches about 79 mm in from the rail hole. Gear in the same U's needs to end 45 mm or more short of the rear rails. The UCG Ultra and Flex Mini mounts are only 116–135 mm deep, so they leave plenty of room. The Mac shelf is 201.5 mm deep, so don't put a holster at its height.
-- **Rear rail:** not measured yet. The plate assumes the rear rails have holes on a face that points into the rack, like the front rails.
+- **Footprint:** each holster sticks out 43 mm behind the rack and reaches about 79 mm in from the rail hole, toward the middle. It takes no room inside the rack, so it can go at any height, even beside the Mac shelf. The left holster goes on the left rail and the right one on the right, as seen from the front of the rack.
+- **Rear rail:** not measured yet. The plate assumes the rear rails' holes go right through, so a screw can go in from the back. If they're tapped, the rack kit's 10-32 screws thread straight in.
 
 ## Editing
 

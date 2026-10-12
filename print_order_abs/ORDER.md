@@ -8,7 +8,7 @@ Upload the three STLs and order them together in the same ABS colour so they mat
 | 02-injector-holster-LEFT-PRINT-1.stl | 1 | 88 × 43 × 98 | Standing on its shelf end |
 | 03-injector-holster-RIGHT-PRINT-1.stl | 1 | 88 × 43 × 98 | Standing on its shelf end |
 
-The left and right holsters are mirror images, so order one of each.
+The left and right holsters are mirror images, so order one of each. They bolt to the back face of the rear rails, with the left one on the left rail as seen from the front of the rack.
 
 Suggested settings: ABS, 0.2 mm layers, 3–4 walls, 15–20% infill.
 

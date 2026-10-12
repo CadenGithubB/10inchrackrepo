@@ -1,9 +1,10 @@
 // =====================================================================
 //  Vertical PoE injector holster for the rear rails of a 10" rack
 //  (DeskPi RackMate T2). Holds a U-PoE-AT standing on end, ports up,
-//  power socket down, just in front of a rear rail.
+//  power socket down (or the reverse), hanging just outside the back
+//  of the rack.
 //
-//  A flat plate bolts to the inside (front-facing) face of a rear rail
+//  A flat plate bolts to the back (outside) face of a rear rail
 //  with two rack screws, 1U apart. A sleeve on the plate holds the
 //  injector with its broad face against the plate:
 //    * side walls and front lips (like the Flex Mini mount's hoods)
@@ -14,7 +15,7 @@
 //  window is wide enough for the power plug or the two RJ45 plugs. Left and right are mirror
 //  images, so both sides of the rack can match.
 //
-//      view from the front of the rack (right-hand holster)
+//      the right-hand holster, seen from the sleeve side
 //                 ports up
 //              |  [====]  |  ||   <- rear rail
 //              |  [    ]  |==o|      rack screw
@@ -24,7 +25,7 @@
 //                 power down
 //
 //  Coordinates: X = across the rack (+ towards the right rail),
-//  Y = towards the front of the rack (0 = rail face), Z = up
+//  Y = away from the rail, out the back of the rack (0 = rail's rear face), Z = up
 //  (0 = bottom of the holster).
 //  Parts: assembly | right | left
 // =====================================================================
