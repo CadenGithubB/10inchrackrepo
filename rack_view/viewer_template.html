@@ -58,20 +58,21 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
   <aside class="rail">
     <div>
       <h1>RackMate T2 build</h1>
-      <p class="sub">Everything printed so far, in the 12U rack: the Mac shelf, the Flex Mini mount and the U6 Pro pedestal on top.</p>
+      <p class="sub">Everything going in the 12U rack: the Mac shelf, the Flex Mini mount, the UCG Ultra mount and the U6 Pro pedestal on top.</p>
     </div>
     <div>
       <p class="label">Show</p>
       <div class="toggles">
         <label><input id="g-ped" type="checkbox" checked><span class="swatch" style="background:#5f7a94"></span>U6 Pro pedestal<span class="u">top</span></label>
         <label><input id="g-flex" type="checkbox" checked><span class="swatch" style="background:#33475e"></span>Flex Mini + injector mount<span class="u">U12</span></label>
+        <label><input id="g-ucg" type="checkbox" checked><span class="swatch" style="background:#161718"></span>UCG Ultra mount (bought)<span class="u">U11</span></label>
         <label><input id="g-mac" type="checkbox" checked><span class="swatch" style="background:#2f3337"></span>Mac Studio + minis shelf<span class="u">U2–U6</span></label>
         <label><input id="g-dev" type="checkbox" checked><span class="swatch" style="background:#c9ccd1"></span>Devices</label>
         <label><input id="g-rack" type="checkbox" checked><span class="swatch" style="background:#1b1e21"></span>Rack frame</label>
         <label><input id="g-sides" type="checkbox" checked><span class="swatch" style="background:#9aa3ad"></span>Acrylic side panels</label>
       </div>
     </div>
-    <p class="note">The printed parts come from their real STLs. The rack, the devices, and the fan in the shelf are rough stand-ins. Positions in the rack are examples. The shelf sits one U up so its bottom fan has room to breathe.</p>
+    <p class="note">The printed parts come from their real STLs. The rack, the devices, the fan in the shelf and the bought UCG Ultra mount are rough stand-ins. Positions in the rack are examples. The shelf sits one U up so its bottom fan has room to breathe.</p>
   </aside>
 </div>
 
@@ -82,7 +83,7 @@ __DATA__
 <script>
 (function () {
   const U = 44.45, TOP_Z = 566.4, DEPTH = 255;
-  const MAC = [0, 0, 1 * U], FLEX = [0, 0, 11 * U], PED = [0, DEPTH / 2 - 19.85, TOP_Z];
+  const MAC = [0, 0, 1 * U], FLEX = [0, 0, 11 * U], UCG = [0, 0, 10 * U], PED = [0, DEPTH / 2 - 19.85, TOP_Z];
   const parts = [
     ['rack_rack', 0x1b1e21, 'g-rack', [0, 0, 0]],
     ['rack_cover', 0x30353a, 'g-rack', [0, 0, 0], 0.85],
@@ -96,6 +97,10 @@ __DATA__
     ['flex_frame', 0xf28c28, 'g-flex', FLEX],
     ['flex_switch', 0xe8eaec, 'g-dev', FLEX],
     ['flex_inj', 0xd0d4d8, 'g-dev', FLEX],
+    ['ucg_mount', 0x161718, 'g-ucg', UCG],
+    ['ucg_keystones', 0xe9eaeb, 'g-ucg', UCG],
+    ['ucg_cables', 0xf08a2c, 'g-ucg', UCG],
+    ['ucg_device', 0xf4f5f6, 'g-dev', UCG],
     ['ped_base', 0x5f7a94, 'g-ped', PED],
     ['ped_deck', 0x5f7a94, 'g-ped', PED],
     ['ped_fan', 0x3a3f45, 'g-ped', PED],
